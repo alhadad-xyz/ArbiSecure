@@ -1,0 +1,8 @@
+[workspace]
+networks = ["arbitrum-sepolia"]
+
+[project]
+name = "arbisecure-escrow"
+
+[build]
+opt-level = "s"
