@@ -1,8 +1,5 @@
 [workspace]
-networks = ["arbitrum-sepolia"]
 
-[project]
-name = "arbisecure-escrow"
+[workspace.networks]
 
-[build]
-opt-level = "s"
+[contract]

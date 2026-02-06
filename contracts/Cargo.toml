@@ -3,6 +3,9 @@ name = "arbisecure-escrow"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["lib", "cdylib"]
+
 [dependencies]
 stylus-sdk = "0.6"
 alloy-primitives = "0.8"
@@ -25,3 +28,6 @@ strip = true
 lto = true
 panic = "abort"
 opt-level = "s"
+
+[patch.crates-io]
+ruint = { version = "=1.12.3" }
