@@ -7,16 +7,17 @@ edition = "2021"
 crate-type = ["lib", "cdylib"]
 
 [dependencies]
-stylus-sdk = "0.6"
-alloy-primitives = "0.8"
-alloy-sol-types = "0.8"
-
-[dev-dependencies]
-tokio = { version = "1.12.0", features = ["full"] }
-ethers = "2.0.0"
+stylus-sdk = "=0.5.0"
+stylus-proc = "=0.5.0"
+ws_stream_wasm = "=0.7.4"
+wit-bindgen = "=0.49.0"
+base64ct = { version = "=1.6.0", features = ["alloc"] }
+ruint = "=1.12.3"
 
 [features]
 export-abi = ["stylus-sdk/export-abi"]
+
+
 
 [[bin]]
 name = "arbisecure-escrow"
@@ -28,6 +29,3 @@ strip = true
 lto = true
 panic = "abort"
 opt-level = "s"
-
-[patch.crates-io]
-ruint = { version = "=1.12.3" }
