@@ -22,7 +22,8 @@ The branch protection settings are defined in `.github/branch-protection.json`.
 
 ### Push Restrictions
 - **Restricted users**: alhadad-xyz
-  - Only the specified user can push to protected branches
+  - This is a whitelist: only the specified user (and repository administrators if enforce_admins is disabled) can push to protected branches
+  - All other users are restricted from pushing
 
 ### Force Push Settings
 - **Allow force pushes**: Enabled for specific users
@@ -55,6 +56,8 @@ curl -X PUT \
   https://api.github.com/repos/alhadad-xyz/ArbiSecure/branches/main/protection \
   -d @.github/branch-protection.json
 ```
+
+**Note:** The `allow_force_pushes` field structure with users/teams/apps may be specific to GitHub Enterprise or a newer API version. If using the standard GitHub REST API, you may need to adjust this field to a boolean value and manage force push permissions through other means.
 
 ## Benefits
 
