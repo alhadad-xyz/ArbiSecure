@@ -2,6 +2,8 @@
 
 This document describes the branch protection rules configured for the ArbiSecure repository.
 
+**Important:** The configuration in `branch-protection.json` is provided as specified in the requirements. The `allow_force_pushes` field structure may need adjustment depending on your GitHub environment (standard API vs. Enterprise) or API version.
+
 ## Configuration File
 
 The branch protection settings are defined in `.github/branch-protection.json`.
@@ -22,8 +24,8 @@ The branch protection settings are defined in `.github/branch-protection.json`.
 
 ### Push Restrictions
 - **Restricted users**: alhadad-xyz
-  - This is a whitelist: only the specified user (and repository administrators if enforce_admins is disabled) can push to protected branches
-  - All other users are restricted from pushing
+  - This is a whitelist: only the specified user can push directly to protected branches
+  - Since enforce_admins is enabled, administrators must also follow this restriction
 
 ### Force Push Settings
 - **Allow force pushes**: Enabled for specific users
