@@ -21,7 +21,7 @@ export-abi = ["stylus-sdk/export-abi"]
 
 [[bin]]
 name = "arbisecure-escrow"
-path = "src/main.rs"
+path = "src/lib.rs"
 
 [profile.release]
 codegen-units = 1

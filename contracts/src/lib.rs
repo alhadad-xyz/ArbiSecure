@@ -1,108 +1,147 @@
 #![cfg_attr(not(feature = "export-abi"), no_main)]
 extern crate alloc;
 
+use alloc::string::String; 
+
 use stylus_sdk::{
-    alloy_primitives::{Address, U256},
+    alloy_primitives::{Address, U256, U8},
     prelude::*,
-    storage::{StorageAddress, StorageU256, StorageMap},
+    storage::{StorageAddress, StorageMap, StorageU256, StorageU8, StorageString}, 
     msg,
-    block,
+    call::transfer_eth,
 };
 
-// Deal status enum
-#[derive(Copy, Clone, PartialEq)]
+// --- 1. DEFINISI STATUS (ENUM) ---
+#[repr(u8)]
+#[derive(PartialEq, Copy, Clone)]
 pub enum DealStatus {
-    Pending = 0,   // Deal created, awaiting deposit
-    Funded = 1,    // Funds deposited
-    Released = 2,  // Funds released to freelancer
-    Disputed = 3,  // Dispute raised
-    Resolved = 4,  // Dispute resolved
+    Pending = 0,
+    Funded = 1,
+    Released = 2,
+    Disputed = 3,
+    Resolved = 4,
 }
 
-// Main contract storage
-#[solidity_storage]
+// Helper: Convert u8 -> DealStatus
+impl From<u8> for DealStatus {
+    fn from(val: u8) -> Self {
+        match val {
+            0 => DealStatus::Pending,
+            1 => DealStatus::Funded,
+            2 => DealStatus::Released,
+            3 => DealStatus::Disputed,
+            4 => DealStatus::Resolved,
+            _ => DealStatus::Pending,
+        }
+    }
+}
+
+// --- 2. STORAGE STRUCT ---
+#[storage]
+pub struct EscrowDeal {
+    pub buyer: StorageAddress,
+    pub seller: StorageAddress,
+    pub amount: StorageU256,
+    pub status: StorageU8,
+    // Simpan Hash (IPFS CID atau Link ID)
+    pub data_hash: StorageString, 
+}
+
+// --- 3. MAIN CONTRACT ---
+#[storage]
 #[entrypoint]
-pub struct ArbiSecureEscrow {
-    deals_client: StorageMap<U256, StorageAddress>,
-    deals_freelancer: StorageMap<U256, StorageAddress>,
-    deals_amount: StorageMap<U256, StorageU256>,
-    deals_arbiter: StorageMap<U256, StorageAddress>,
-    deals_status: StorageMap<U256, StorageU256>,
-    deals_created_at: StorageMap<U256, StorageU256>,
-    deal_count: StorageU256,
+pub struct ArbiSecure {
+    pub deal_count: StorageU256,
+    pub deals: StorageMap<U256, EscrowDeal>,
 }
 
-#[external]
-impl ArbiSecureEscrow {
-    /// Initialize the contract
-    pub fn init(&mut self) -> Result<(), Vec<u8>> {
-        Ok(())
-    }
-
-    /// Create a new escrow deal
-    pub fn create_deal(
-        &mut self,
-        freelancer: Address,
-        amount: U256,
-        arbiter: Address,
-    ) -> Result<U256, Vec<u8>> {
-        let deal_id = self.deal_count.get();
-        let client = msg::sender();
+// --- 4. IMPLEMENTASI LOGIKA ---
+#[public]
+impl ArbiSecure {
+    
+    // --- CREATE DEAL ---
+    // User wajib kirim hash referensi
+    pub fn create_deal(&mut self, seller: Address, amount: U256, data_hash: String) -> Result<U256, Vec<u8>> {
+        let current_id = self.deal_count.get();
+        let new_id = current_id + U256::from(1);
         
-        let mut client_storage = self.deals_client.setter(deal_id);
-        client_storage.set(client);
+        self.deal_count.set(new_id);
 
-        let mut freelancer_storage = self.deals_freelancer.setter(deal_id);
-        freelancer_storage.set(freelancer);
+        let mut new_deal = self.deals.setter(new_id);
+        new_deal.buyer.set(msg::sender());
+        new_deal.seller.set(seller);
+        new_deal.amount.set(amount);
+        new_deal.status.set(U8::from(DealStatus::Pending as u8));
+        
+        // Simpan Hash-nya
+        new_deal.data_hash.set_str(&data_hash);
 
-        let mut amount_storage = self.deals_amount.setter(deal_id);
-        amount_storage.set(amount);
-
-        let mut arbiter_storage = self.deals_arbiter.setter(deal_id);
-        arbiter_storage.set(arbiter);
-
-        let mut status_storage = self.deals_status.setter(deal_id);
-        status_storage.set(U256::from(DealStatus::Pending as u8));
-
-        let mut created_at_storage = self.deals_created_at.setter(deal_id);
-        created_at_storage.set(U256::from(block::timestamp()));
-
-        let new_count = deal_id + U256::from(1);
-        self.deal_count.set(new_count);
-
-        Ok(deal_id)
+        Ok(new_id)
     }
 
-    /// Deposit funds into escrow
-    /// TODO (Day 2): Implement deposit logic
-    pub fn deposit(&mut self, _deal_id: U256) -> Result<(), Vec<u8>> {
-        // TODO: Implement deposit logic
+    // --- DEPOSIT ---
+    #[payable]
+    pub fn deposit(&mut self, deal_id: U256) -> Result<(), Vec<u8>> {
+        let mut deal = self.deals.setter(deal_id);
+        
+        let status_u8: u8 = deal.status.get().to(); 
+        if status_u8 != (DealStatus::Pending as u8) {
+            return Err(b"Deal is not in Pending state".to_vec());
+        }
+
+        if msg::value() != deal.amount.get() {
+             return Err(b"Incorrect deposit amount".to_vec());
+        }
+
+        deal.status.set(U8::from(DealStatus::Funded as u8));
         Ok(())
     }
 
-    /// Release funds to freelancer
-    /// TODO (Day 2): Implement release logic
-    pub fn release(&mut self, _deal_id: U256) -> Result<(), Vec<u8>> {
-        // TODO: Implement release logic
+    // --- RELEASE ---
+    pub fn release(&mut self, deal_id: U256) -> Result<(), Vec<u8>> {
+        let mut deal = self.deals.setter(deal_id);
+
+        let status_u8: u8 = deal.status.get().to();
+        if status_u8 != (DealStatus::Funded as u8) {
+            return Err(b"Deal is not funded yet".to_vec());
+        }
+
+        if msg::sender() != deal.buyer.get() {
+            return Err(b"Only Buyer can release funds".to_vec());
+        }
+
+        let seller = deal.seller.get();
+        let amount = deal.amount.get();
+
+        transfer_eth(seller, amount)?;
+
+        deal.status.set(U8::from(DealStatus::Released as u8));
         Ok(())
     }
 
-    /// Get deal details
-    pub fn get_deal(&self, deal_id: U256) -> Result<(Address, Address, U256, Address, U256, U256), Vec<u8>> {
-        // StorageMap accesses return accessors (Guards). 
-        // We convert StorageType to primitive using .into() (or check if that works).
-        let client = self.deals_client.get(deal_id).into();
-        let freelancer = self.deals_freelancer.get(deal_id).into();
-        let amount = self.deals_amount.get(deal_id).into();
-        let arbiter = self.deals_arbiter.get(deal_id).into();
-        let status = self.deals_status.get(deal_id).into();
-        let created_at = self.deals_created_at.get(deal_id).into();
+    // --- VIEW FUNCTIONS ---
 
-        Ok((client, freelancer, amount, arbiter, status, created_at))
-    }
-
-    /// Get total number of deals
     pub fn get_deal_count(&self) -> Result<U256, Vec<u8>> {
         Ok(self.deal_count.get())
     }
+
+    // Return Data Lengkap: (Buyer, Seller, Amount, Status, Hash)
+    pub fn get_deal(&self, deal_id: U256) -> Result<(Address, Address, U256, u8, String), Vec<u8>> {
+        let deal = self.deals.get(deal_id);
+        
+        Ok((
+            deal.buyer.get(),
+            deal.seller.get(),
+            deal.amount.get(),
+            deal.status.get().to(),
+            deal.data_hash.get_string(), // Ambil Hash-nya
+        ))
+    }
+}
+
+// --- TAMBAHAN WAJIB UNTUK EXPORT ABI ---
+#[cfg(feature = "export-abi")]
+fn main() {
+    // Kita isi dengan "MIT" dan versi Solidity standar
+    stylus_sdk::abi::export::print_abi::<ArbiSecure>("MIT", "pragma solidity ^0.8.23;");
 }
