@@ -7,16 +7,30 @@ use stylus_sdk::{
     storage::{StorageAddress, StorageU256, StorageMap},
     msg,
     block,
+    call,
+    evm,
 };
+use alloy_sol_types::{sol, SolError};
 
 // Deal status enum
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq, PartialOrd)]
 pub enum DealStatus {
     Pending = 0,   // Deal created, awaiting deposit
     Funded = 1,    // Funds deposited
     Released = 2,  // Funds released to freelancer
     Disputed = 3,  // Dispute raised
     Resolved = 4,  // Dispute resolved
+}
+
+// Define events and errors using sol! macro
+sol! {
+    event DealFunded(uint256 indexed deal_id, uint256 amount);
+    event DealReleased(uint256 indexed deal_id, address freelancer, uint256 amount);
+    
+    error InvalidStatus();
+    error Unauthorized();
+    error IncorrectAmount();
+    error TransferFailed();
 }
 
 // Main contract storage
@@ -74,16 +88,66 @@ impl ArbiSecureEscrow {
     }
 
     /// Deposit funds into escrow
-    /// TODO (Day 2): Implement deposit logic
-    pub fn deposit(&mut self, _deal_id: U256) -> Result<(), Vec<u8>> {
-        // TODO: Implement deposit logic
+    #[payable]
+    pub fn deposit(&mut self, deal_id: U256) -> Result<(), Vec<u8>> {
+        // 1. Check status is Pending
+        let current_status = self.deals_status.get(deal_id);
+        if current_status != U256::from(DealStatus::Pending as u8) {
+            return Err(InvalidStatus{}.encode());
+        }
+
+        // 2. Check amount matches
+        let required_amount = self.deals_amount.get(deal_id);
+        if msg::value() != required_amount {
+             return Err(IncorrectAmount{}.encode());
+        }
+
+        // 3. Update status to Funded
+        let mut status_storage = self.deals_status.setter(deal_id);
+        status_storage.set(U256::from(DealStatus::Funded as u8));
+
+        // 4. Emit event
+        evm::log(DealFunded {
+            deal_id,
+            amount: required_amount,
+        });
+
         Ok(())
     }
 
     /// Release funds to freelancer
-    /// TODO (Day 2): Implement release logic
-    pub fn release(&mut self, _deal_id: U256) -> Result<(), Vec<u8>> {
-        // TODO: Implement release logic
+    pub fn release(&mut self, deal_id: U256) -> Result<(), Vec<u8>> {
+        // 1. Check sender is Client
+        let client = self.deals_client.get(deal_id);
+        if msg::sender() != client {
+            return Err(Unauthorized{}.encode());
+        }
+
+        // 2. Check status is Funded
+        let current_status = self.deals_status.get(deal_id);
+        if current_status != U256::from(DealStatus::Funded as u8) {
+             return Err(InvalidStatus{}.encode());
+        }
+
+        // 3. Transfer to Freelancer
+        let freelancer = self.deals_freelancer.get(deal_id);
+        let amount = self.deals_amount.get(deal_id);
+
+        if call::transfer_eth(freelancer, amount).is_err() {
+            return Err(TransferFailed{}.encode());
+        }
+
+        // 4. Update status to Released
+        let mut status_storage = self.deals_status.setter(deal_id);
+        status_storage.set(U256::from(DealStatus::Released as u8));
+
+        // 5. Emit event
+        evm::log(DealReleased {
+            deal_id,
+            freelancer,
+            amount,
+        });
+
         Ok(())
     }
 

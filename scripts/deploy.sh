@@ -7,19 +7,32 @@ set -e
 
 echo "🚀 Deploying ArbiSecure Escrow to Arbitrum Sepolia..."
 
+# Resolve root directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
 # Check if .env exists
-if [ ! -f ../.env ]; then
-    echo "❌ Error: .env file not found"
+if [ ! -f "$ROOT_DIR/.env" ]; then
+    echo "❌ Error: .env file not found at $ROOT_DIR/.env"
     echo "Please create .env file with PRIVATE_KEY and ALCHEMY_API_KEY"
     exit 1
 fi
 
 # Load environment variables
-source ../.env
+source "$ROOT_DIR/.env"
+
+# Fallback to public RPC if Alchemy key is missing or not set
+if [[ -z "$ARBITRUM_SEPOLIA_RPC_URL" ]] || [[ "$ARBITRUM_SEPOLIA_RPC_URL" == *"YOUR_API_KEY"* ]]; then
+    echo "⚠️  Alchemy RPC URL not configured or contains placeholder."
+    echo "🔄  Falling back to public Arbitrum Sepolia endpoint..."
+    ARBITRUM_SEPOLIA_RPC_URL="https://sepolia-rollup.arbitrum.io/rpc"
+fi
+
+echo "Debug: Using RPC_URL: $ARBITRUM_SEPOLIA_RPC_URL"
 
 # Build the contract
 echo "📦 Building contract..."
-cd ../contracts
+cd "$ROOT_DIR/contracts"
 cargo build --release --target wasm32-unknown-unknown
 
 # Deploy using Stylus CLI
