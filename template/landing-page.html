@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Oxaley - Creative Agency</title>
+    <meta
+        content="Crafting narrative through design. Oxaley is a creative agency focused on immersive and meaningful experiences."
+        name="description" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#5b21b6", // Deep purple used in accents/gradients
+                        "background-light": "#ffffff",
+                        "background-dark": "#050505",
+                        "surface-light": "#f8f9fa",
+                        "surface-dark": "#121212",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Inter', 'sans-serif'], // Main headings
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(180deg, #000000 0%, #1e1b4b 40%, #ffffff 100%)',
+                        'hero-gradient-dark': 'linear-gradient(180deg, #000000 0%, #312e81 50%, #050505 100%)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+        }
+
+        .clip-text-image {
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-white transition-colors duration-300 antialiased font-sans">
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+        <div class="text-xl font-bold tracking-wide">Oxaley</div>
+        <div class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-tight">
+            <a class="hover:text-gray-300 transition-colors" href="#">About Us</a>
+            <a class="hover:text-gray-300 transition-colors" href="#">Services</a>
+            <a class="hover:text-gray-300 transition-colors" href="#">Project</a>
+            <a class="hover:text-gray-300 transition-colors" href="#">FAQ</a>
+        </div>
+        <a class="hidden md:flex items-center text-xs font-semibold uppercase tracking-wider hover:underline underline-offset-4"
+            href="#">
+            Contact Us <span class="material-icons-outlined text-sm ml-1">arrow_forward</span>
+        </a>
+        <button class="md:hidden text-white">
+            <span class="material-icons-outlined">menu</span>
+        </button>
+    </nav>
+    <div class="fixed bottom-6 right-6 z-50">
+        <button
+            class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg text-gray-800 dark:text-white hover:scale-110 transition-transform"
+            id="theme-toggle">
+            <span class="material-icons-outlined dark:hidden">dark_mode</span>
+            <span class="material-icons-outlined hidden dark:block">light_mode</span>
+        </button>
+    </div>
+    <header
+        class="relative w-full min-h-screen pt-32 pb-20 px-6 md:px-12 flex flex-col justify-between bg-hero-gradient dark:bg-hero-gradient-dark overflow-hidden">
+        <div
+            class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-[60vh] bg-indigo-900/30 blur-[120px] rounded-full pointer-events-none">
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto flex flex-col h-full justify-between">
+            <div class="mt-12 md:mt-24">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.1] text-white tracking-tight">
+                    <span class="block font-bold">Crafting</span>
+                    <span class="block font-serif italic text-indigo-200 opacity-90">narrative</span>
+                    <span class="block text-gray-300">through</span>
+                    <span class="block">design</span>
+                </h1>
+                <div class="flex -space-x-3 mt-8">
+                    <img alt="Team member 1" class="w-10 h-10 rounded-full border-2 border-black object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8B7YoJqx6fi5VfjMoRTYOn-BgTt0dZUEvFEtPiFdAhwjxQEeQgzdFrGZ9cFK4P6WS66eihHW9NEQU0p3TTy5Tiu-qgjqpHbp-gWm6JYXQ_SOxkH0yvBuvRRwKdhFJNn3dnVJcViyn9_D-FNyctnQlXSoYDGsrIQVB99sue36B4kaN_4s15BKp-dWI-hHgQfuc472Thnt97G68PUZQc3-OtBn8D5prIfmUqy1pwmuxO59_Pu85-F0LzVqbiyJYY0khxeN2Epyx8uX0" />
+                    <img alt="Team member 2" class="w-10 h-10 rounded-full border-2 border-black object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB820CRBJr_KK3p_BUoDU_mlwmUBCxoDuQ3rjcB-2ebtE4Uywa-CiZgFSpuLnt1DOOUfSA8efErV3ji4E4DmerhTYGPrDKCTqKQk-qWBMbuYrirN6somt7vrc0uDDHv2Ch0RnUtY618RFTDboaT4xn_VkDc3VYkAkuyiDn2xXT5lZ4qz2bfWkI7fgfQxbDVcY7_u3Fjx5s4zzkUfsHokUTx55H2wh05j48EWSJPuWBjncVzdW-b4ZT5sLNbmrBwJh6Hvp1qZMaGf9Ni" />
+                    <img alt="Team member 3" class="w-10 h-10 rounded-full border-2 border-black object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTI94w8ZgGrZsKLuSGJIQ5jm1HlTg1U-PWD18oB-WBeddvIDbWTQnSLL7msoAHLGuLvmRrkxalZfBZVxBMomfEEnZesUC42pO50adNSCn1mT9uYVxMwwDWRCEPoxYuyrfCE3ZdWguY3F0BYoVWWBSWBXd_KCCIIZfw19X8hgs9UoJDgQrE4HDvzSG1vBfphB_xwPHJS2Fav4wYA5zv2PlYYCAbxOx9ILyKdHYmwesfwJQlg0C9yg6phMhUWCQsW2r8XIcQaAmkKdko" />
+                    <div
+                        class="w-10 h-10 rounded-full border-2 border-black bg-white flex items-center justify-center text-xs font-bold text-black">
+                        +4</div>
+                </div>
+            </div>
+            <div class="mt-20 flex flex-col md:flex-row items-end md:items-center justify-between gap-8 text-white">
+                <div class="text-xs uppercase tracking-widest font-semibold opacity-70">
+                    See our portfolio
+                </div>
+                <div class="hidden md:flex gap-4">
+                    <div
+                        class="w-32 h-20 bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-xl rotate-[-2deg]">
+                        <img alt="Abstract preview" class="w-full h-full object-cover opacity-80"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuATiIThveon5GKFX7m9B3zMppO3jRY80njDCvWLCsPtU1BdqUESDN8doHgcJ4NkGOdQNJ0gCBgsR4lZrZLau0SU9phJSt1phx_giWIVzCT5AMRvZtdc2hzTGsCUtnRhbti1-LrQ6LPFvdYArIi7PP6y3AWxaW-0pUtzjxydUNG7UshdASqfdAxhi6gk15x5Ax-OpqtxZV5QT8NSmIVjUcRA15bFSiphgO2MXsqM92J47PEi76haQFSOBYyvKB9Id-gAgTD5nQmbvOO6" />
+                    </div>
+                    <div
+                        class="w-32 h-20 bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-xl z-10 scale-110">
+                        <img alt="Tech preview" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjelTfbjrKoJ360KIptgjwJcHNQ5IXPtI6tLe3yqbHh8OI0M28IK7dto3DMuYN-1gppCmndMoFF-SFwe2YbQjc9QLK2bYrcXe1ECJ-QLbHpDPHObTKUA0JCNwWjHLC-aHZAr_F2x1vJWt4OvEkAQuuF7aTCWjbBWn44NT79FcGli29oKb_d3fnbtpbNWvYgcKfZlGG5GGCpKCF0PaE6vamhgEBwYD8dLjHLyX0QZCCIGBYejv31ejaq8gZBwKNyspWdenEvM_FmXKq" />
+                    </div>
+                    <div
+                        class="w-32 h-20 bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-xl rotate-[2deg]">
+                        <img alt="Cyberpunk preview" class="w-full h-full object-cover opacity-80"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDihhG6cxnsOqGajsqvlFoBzGCLet13LAUB0JfwqLnHu58-ygZm-28aHF8iFvZz1W1RhnBKDh2h3u9-EBom1hmAtq6Tk4BK1mLVVRCRcTIX3tfkUAtSv7yjSmkLBvGzReMYnUToybTRl-_z8nMrIGcNQmIlGY85jtdhUe8QSHv4x7NqKaKhKk5KFgzPfJ5n1wJz3c-ygZNj5nNVQYd93BqBUBC3GTVlcr6z0xnrwIZ_abpdBsiS0Cbm3NyKq_-LqmhFQD3wuTp7X3o9" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 cursor-pointer group">
+                    <span
+                        class="text-xs uppercase tracking-widest font-semibold opacity-70 group-hover:opacity-100 transition-opacity">Scroll
+                        Now</span>
+                    <div
+                        class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                        <span class="material-icons-outlined text-sm">arrow_downward</span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute top-20 right-10 text-right opacity-60 hidden lg:block">
+                <p class="text-xs max-w-[150px] leading-relaxed text-white">
+                    We believe good design is key to building strong connections.
+                </p>
+            </div>
+        </div>
+    </header>
+    <section class="py-24 px-6 md:px-12 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-24">
+                <div class="lg:w-7/12">
+                    <h2
+                        class="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-gray-900 dark:text-white">
+                        At oxaley — we believe that design is not just <span
+                            class="font-serif italic text-gray-500 dark:text-gray-400">about appearance</span> but <span
+                            class="font-bold">also</span> about creating — <span
+                            class="text-gray-400 dark:text-gray-600">immersive and</span> meaningful — experiences.
+                    </h2>
+                </div>
+                <div class="lg:w-4/12 flex flex-col justify-between h-full pt-4">
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 block">About
+                                Us</span>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed max-w-xs">
+                            We combine creativity and technology to deliver results that not only meet expectations, but
+                            exceed them.
+                        </p>
+                        <a class="inline-flex items-center text-xs font-bold uppercase tracking-wider hover:text-primary transition-colors"
+                            href="#">
+                            Learn More <span class="material-icons-outlined text-sm ml-1">arrow_forward</span>
+                        </a>
+                    </div>
+                    <div class="hidden lg:flex flex-col gap-2 mt-12 opacity-20">
+                        <div class="w-24 h-8 border border-current rounded"></div>
+                        <div class="w-24 h-8 border border-current rounded translate-x-4"></div>
+                        <div class="w-24 h-8 border border-current rounded"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-12 px-6 md:px-12 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-8">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Best Project</h3>
+                <a class="text-xs font-bold uppercase tracking-wider flex items-center gap-1 hover:text-primary transition-colors"
+                    href="#">
+                    See More <span class="material-icons-outlined text-sm">north_east</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2 group relative rounded-3xl overflow-hidden aspect-[16/9] md:aspect-[21/9]">
+                    <img alt="Tom Ford Perfume Project"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhra8EoEEwlIBQSqtP-t0SaZ38XD_uSZKm69bYaIgxAkoCZ9MGWz0nD7aUJ9wfKoVgKQIQNCZ7T8_IKY4XIRCN4IC_nRtONN36y8b_84lcS28ubgQI_-6B7Q4JhICwSen5rKbtnvJbfntbGkTnnrnt2tj1Wg28Vu-6d5z_AdUpZIKMYASXpdAZW-jWs9B18v_aajVUtiFxbnVHohS6xPPqbmDBwy6-W8pF0V0bLvjgfTZbzCmMDf83IIE8JyU4_3jMDz8Kn1fXNDTj" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90">
+                    </div>
+                    <div class="absolute bottom-8 left-8 md:bottom-12 md:left-12">
+                        <h4 class="text-white text-3xl md:text-4xl font-serif italic mb-1">Tom Ford</h4>
+                        <p class="text-gray-300 text-sm uppercase tracking-wider">Ombré Leather</p>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden aspect-square">
+                    <img alt="Lampre Project"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJf_DTT730pg_7UFxajrCXCdk00iG1OZESlzJe-NXiJkdxFvWsx3FvEMh1iSohpMNW7PiW7JZgawBPU1b7-WeUYza8wKw7RpUPAJCkIpNXYYozqmXKloTX5iwQK3-VF_1NoReFN4eid8_-RQDvrfnPH8EpJhqivn0nJPeH4Blri6DsWyrZad-rK4NZ1QNqftNjwkhYoepqC1o81sh_5YrEQ5qpAZaDvgkSslqF8bR5HOhnuATXR6VRIhNdEyWuNA_vpeUhc8F_0hrV" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-8 left-8">
+                        <h4 class="text-white text-2xl font-bold">Lampre</h4>
+                        <p class="text-gray-300 text-xs">Beauty Branding</p>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden aspect-square">
+                    <img alt="Lexus Project"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjz46DGU51g3OKKPUVp1l7ayq8B-4M0SvR7Nhxih9iOkf1Te8eG_AlnY8LT6L0MMofD66-ioN7heH4-mWeF9C02o7kgVEYkYAbR9VJmpzolbxpY0c40hq4l8CSfomd6BeZ2RdJ1FK7An7yFoaXcJafPmHwaqZsDj4bFbeG9MfYz1cXcibz97SRtG-hSpfVa-bGMuFgHC-bEUVDUPqwPbEb32ywHFclUzSP_PWeZ6B-qpJf0OrDzpykbM8oqYqvjSWKhupBLNLtVdj6" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-8 left-8">
+                        <h4 class="text-white text-2xl font-bold">Lexus</h4>
+                        <p class="text-gray-300 text-xs">Automotive Interface</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-24 px-6 md:px-12 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <div
+                class="group relative p-8 md:p-12 bg-surface-light dark:bg-surface-dark rounded-3xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-900">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="md:w-1/3">
+                        <h3
+                            class="text-2xl md:text-3xl font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                            Mobile App<br />Design</h3>
+                    </div>
+                    <div class="md:w-1/3 flex justify-center">
+                        <div
+                            class="w-32 h-32 rounded-2xl overflow-hidden shadow-lg transform group-hover:-rotate-6 transition-transform duration-300">
+                            <img alt="Mobile App Design" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLirXYdeGYzU1W8m26L0InT1081RJhSJ_kivDIjSGFHK_nwVnOvpBH1GK_69Ctn6M4aYd0Ce-7XEt7xn30imexUijDq1vp4Zu1Yhj8D5GIy70hXbyzpf3byNj5QtwIzLYITDgXIN1xsY5Shp5IZ2OeGGzJBIHzwCZtV3-kukbX5A8Z8252wbR2SRsJ6bzQZZoOa4tZtpONYC0Rx3uAp71CPksG7043HNn--E5UmKlvqDwKjw6I-Az5JV8-wpTlkC90IutZDuxFU0-m" />
+                        </div>
+                    </div>
+                    <div class="md:w-1/3 text-right md:text-left">
+                        <p class="text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
+                            We help your business create mobile apps that are not only attractive, but also functional.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group relative p-8 md:p-12 bg-surface-light dark:bg-surface-dark rounded-3xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-900">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="md:w-1/3">
+                        <h3
+                            class="text-2xl md:text-3xl font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                            Website<br />Design</h3>
+                    </div>
+                    <div class="md:w-1/3 flex justify-center">
+                        <div
+                            class="w-32 h-32 rounded-2xl overflow-hidden shadow-lg transform group-hover:rotate-6 transition-transform duration-300">
+                            <img alt="Website Design" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwFKZTxGUtfejoaNZQCyHxGDv558aBgvGQYZZkSBuBaQpxa_dPY3VB_y50xO1TF3HjT_MK2rwNiK0sN6bcH3CHKKrcT0gV9lGCnXF0yGlNHczXhhMW02PZVUb2In5_q86IK1O5_lP47Qt0ceYqDBHLftDm4wsyo4JQ2Gl-_Zb4tDn0YRunaO6i8dpSLLMVZ8tpwH2BLz39jdZpLuiGYlOpkRlt-8L8VIEIQ86YC_KD9aSrgXhVARSwzBXgLdnv-0RMrxaYTw4QzqGo" />
+                        </div>
+                    </div>
+                    <div class="md:w-1/3 text-right md:text-left">
+                        <p class="text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
+                            We create websites that are responsive, modern and easy to navigate, helping your business
+                            look professional.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="group relative p-8 md:p-12 bg-surface-light dark:bg-surface-dark rounded-3xl transition-colors hover:bg-gray-100 dark:hover:bg-gray-900">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="md:w-1/3">
+                        <h3
+                            class="text-2xl md:text-3xl font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                            Development</h3>
+                    </div>
+                    <div class="md:w-1/3 flex justify-center">
+                        <div
+                            class="w-32 h-32 rounded-2xl overflow-hidden shadow-lg transform group-hover:-rotate-3 transition-transform duration-300">
+                            <img alt="Development" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHbCqRqiBwM2TcsW0qYNp9qzUyaVI-WJ4XyRhFvzkCzf1s_987PvOsaMTrGiorg2aTq29EpivIMNP7W1pFxJpI4bnAb0hT7Kfbx0Yml0FMEuMW0Rv3_eQcrDZRYOscY3Ww2DNe8FKbOblQtAZ3UpdcOC1huKCc5baM2dXdRT2bvAmI57Tv4RV006D_7qSYP2qQ8j2XE4HblLL50FLnm-MF1ZcURSU6BcU_lYjqtNZy_mBXTOTYZvZUK0bGxfMemfBFR86hnSOkJykI" />
+                        </div>
+                    </div>
+                    <div class="md:w-1/3 text-right md:text-left">
+                        <p class="text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
+                            We use the latest technology to ensure the products we make are not only efficient, but
+                            scalable.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-12 px-6 md:px-12 bg-background-light dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto">
+            <div
+                class="relative rounded-[2rem] overflow-hidden bg-[#2d1b4e] aspect-[4/3] md:aspect-[16/7] flex items-center justify-center">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#1a103c] to-[#4c2a6d] opacity-90"></div>
+                <div class="absolute inset-0 p-8 md:p-16 flex flex-col md:flex-row justify-between z-10">
+                    <div class="space-y-2">
+                        <div class="text-white/40 text-sm">03</div>
+                        <h3
+                            class="text-3xl md:text-5xl font-bold text-white/30 hover:text-white transition-colors cursor-pointer">
+                            Horigo style</h3>
+                        <div class="relative">
+                            <h3 class="text-3xl md:text-5xl font-bold text-white">Lordsleep App</h3>
+                            <div class="absolute -top-2 -right-6 text-xs text-white/60">04</div>
+                        </div>
+                        <h3
+                            class="text-3xl md:text-5xl font-bold text-white/30 hover:text-white transition-colors cursor-pointer">
+                            Datingford</h3>
+                        <h3
+                            class="text-3xl md:text-5xl font-bold text-white/30 hover:text-white transition-colors cursor-pointer">
+                            Holigan</h3>
+                    </div>
+                    <div class="absolute bottom-8 left-8 md:left-16 flex items-center gap-2">
+                        <div class="h-8 w-0.5 bg-white"></div>
+                        <div class="text-white font-mono text-sm">04/08</div>
+                    </div>
+                </div>
+                <div class="relative z-0 w-full h-full flex items-center justify-center">
+                    <img alt="3D Sphere"
+                        class="w-3/4 md:w-1/2 h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] mix-blend-screen opacity-90"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwROmjkV1M9wbLELLeGarQDM81DJOeEq-S2K3cBjdkMXRUoftV8xiEzZic7r9u1NUAmjMQcQXMyM7BlWEumQaZ3aow2sdE2inninmzwtvdEENeB_pfMXwLnTZmxTgkB7rwz9eTTECoCCGSP5dV6ekFSHK3bNX5d8fKlxdtXged8EAfbhLr8jTVIQz9pRCmit9CdlbLPaTrUFuufhZz0m0CIKdmY83kVOXK8e7LVTSVhAbDjnix3lRRTJgs_rf-h7D4gD-R0o0oCMRO" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-black text-white pt-24 pb-12 px-6 md:px-12 rounded-t-[3rem] mt-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start mb-20 gap-12">
+                <div>
+                    <h2 class="text-5xl md:text-6xl font-medium tracking-tight">
+                        Frequently<br />
+                        <span class="font-serif italic text-gray-400">asked</span><br />
+                        questions
+                    </h2>
+                </div>
+                <div class="max-w-xs">
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        You can find explanations of our products, services, policies and anything else you may need to
+                        know.
+                    </p>
+                </div>
+            </div>
+            <div class="space-y-4 mb-32 md:ml-auto md:w-2/3 lg:w-1/2">
+                <details
+                    class="group bg-neutral-900 rounded-xl overflow-hidden cursor-pointer transition-colors hover:bg-neutral-800">
+                    <summary class="flex justify-between items-center p-6 text-sm font-medium select-none">
+                        What services does Oxaley offer?
+                        <span
+                            class="material-icons-outlined transform group-open:rotate-45 transition-transform text-gray-500">add_circle</span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        We offer a comprehensive suite of digital services including UI/UX design, mobile app
+                        development, web development, and branding strategies tailored to your business needs.
+                    </div>
+                </details>
+                <details
+                    class="group bg-neutral-900 rounded-xl overflow-hidden cursor-pointer transition-colors hover:bg-neutral-800">
+                    <summary class="flex justify-between items-center p-6 text-sm font-medium select-none">
+                        How does Oxaley work with clients?
+                        <span
+                            class="material-icons-outlined transform group-open:rotate-45 transition-transform text-gray-500">add_circle</span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        We believe in a collaborative approach. From initial discovery workshops to iterative design
+                        sprints, we keep you involved at every stage to ensure the final product aligns perfectly with
+                        your vision.
+                    </div>
+                </details>
+                <details
+                    class="group bg-neutral-900 rounded-xl overflow-hidden cursor-pointer transition-colors hover:bg-neutral-800">
+                    <summary class="flex justify-between items-center p-6 text-sm font-medium select-none">
+                        How long does it take to complete a design project?
+                        <span
+                            class="material-icons-outlined transform group-open:rotate-45 transition-transform text-gray-500">add_circle</span>
+                    </summary>
+                </details>
+                <details
+                    class="group bg-neutral-900 rounded-xl overflow-hidden cursor-pointer transition-colors hover:bg-neutral-800">
+                    <summary class="flex justify-between items-center p-6 text-sm font-medium select-none">
+                        Does Oxaley accept design projects for mobile apps?
+                        <span
+                            class="material-icons-outlined transform group-open:rotate-45 transition-transform text-gray-500">add_circle</span>
+                    </summary>
+                </details>
+            </div>
+            <div
+                class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 mb-16">
+                <div class="flex items-center gap-4">
+                    <a class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                        href="#">
+                        <span class="text-sm font-bold">Ig</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                        href="#">
+                        <span class="text-sm font-bold">X</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                        href="#">
+                        <span class="text-sm font-bold">In</span>
+                    </a>
+                </div>
+                <div class="text-neutral-500 text-xs">
+                    © 2024 Oxaley. All Rights Reserved.
+                </div>
+                <div class="flex gap-6 text-neutral-500 text-xs">
+                    <a class="hover:text-white" href="#">Terms &amp; Conditions</a>
+                    <a class="hover:text-white" href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="w-full overflow-hidden flex items-center justify-center">
+                <h1
+                    class="text-[15vw] leading-none font-bold tracking-tighter text-white select-none mix-blend-overlay opacity-30">
+                    OXALEY
+                </h1>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Theme toggle logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        // Check for saved user preference, if any, on load of the website
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        themeToggleBtn.addEventListener('click', function () {
+            // if set via local storage previously
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+                // if NOT set via local storage previously
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
