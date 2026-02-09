@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Walle Crypto Landing Page</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FFFFFF",
+                        "background-light": "#F3F4F6",
+                        "background-dark": "#1A1A1A",
+                        "card-dark": "#262626",
+                        "accent-pink": "#FF007A",
+                        "accent-blue": "#00C2FF",
+                        "accent-purple": "#8F00FF",
+                        "accent-green": "#CCFF00",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .display-text-bold {
+                font-family: 'Inter', sans-serif;
+                font-weight: 900;
+                text-transform: uppercase;
+            }
+            .display-text-serif {
+                font-family: 'Playfair Display', serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+            .ticker-wrap {
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            .ticker-move {
+                display: inline-block;
+                animation: ticker 30s linear infinite;
+            }
+            .ticker-item {
+                display: inline-block;
+                padding: 0 1rem;
+            }
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-white min-h-screen flex flex-col font-sans selection:bg-white selection:text-black overflow-x-hidden transition-colors duration-300">
+    <header class="w-full px-6 py-6 flex items-center justify-between z-50 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2 cursor-pointer">
+            <div class="flex items-center">
+                <div class="w-5 h-5 bg-white rounded-full"></div>
+                <div class="w-5 h-5 bg-white/70 rounded-full -ml-2"></div>
+                <div class="w-5 h-5 bg-white/40 rounded-full -ml-2"></div>
+            </div>
+            <span class="text-xl font-bold tracking-tighter ml-2">WALLE</span>
+        </div>
+        <nav
+            class="hidden md:flex items-center gap-10 text-xs font-mono tracking-widest text-gray-400 dark:text-gray-300 uppercase">
+            <a class="hover:text-white transition-colors" href="#">How It Works</a>
+            <a class="hover:text-white transition-colors" href="#">About</a>
+        </nav>
+        <button
+            class="bg-primary text-black px-6 py-3 rounded-xl font-bold text-xs tracking-wider hover:scale-105 transition-transform uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+            Connect Wallet
+        </button>
+    </header>
+    <div class="w-full border-y border-white/5 bg-white/5 backdrop-blur-sm py-2 overflow-hidden mb-12">
+        <div class="ticker-wrap">
+            <div class="ticker-move">
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">KIIRGS</span> 81.190776641 <span
+                        class="text-red-500">▼ 2.25</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">AURORA</span> 30.167864121 <span
+                        class="text-red-500">▼ 1.09</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">LUNCH</span> 53.339676069 <span
+                        class="text-red-500">▼ 4.53</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">NEBUS</span> 94.486769223 <span
+                        class="text-red-500">▼ 2.13</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">VORTEX</span> 91.176005023 <span
+                        class="text-red-500">▼ 1.88</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">KIIRGS</span> 81.190776641 <span
+                        class="text-red-500">▼ 2.25</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">AURORA</span> 30.167864121 <span
+                        class="text-red-500">▼ 1.09</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">LUNCH</span> 53.339676069 <span
+                        class="text-red-500">▼ 4.53</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">NEBUS</span> 94.486769223 <span
+                        class="text-red-500">▼ 2.13</span></span>
+                <span class="ticker-item text-xs font-mono text-gray-400"><span
+                        class="text-white bg-white/10 px-2 py-1 rounded">VORTEX</span> 91.176005023 <span
+                        class="text-red-500">▼ 1.88</span></span>
+            </div>
+        </div>
+    </div>
+    <main class="flex-grow flex flex-col items-center justify-center px-4 md:px-0 max-w-7xl mx-auto w-full">
+        <div class="text-center mb-16 space-y-2 md:space-y-4">
+            <h1 class="text-5xl md:text-8xl leading-tight tracking-tight">
+                <span class="display-text-bold">WALLE</span> <span
+                    class="display-text-serif italic font-light text-gray-400">IS THE</span>
+                <br />
+                <span class="display-text-serif">CRYPTO</span> <span class="display-text-bold">SOLUTION</span>
+                <br />
+                <span class="display-text-bold">FOR</span> <span
+                    class="display-text-serif font-light text-gray-300">THE</span> <span
+                    class="display-text-bold">NEW</span> <span class="display-text-serif">ECONOMY</span>
+            </h1>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-6 mb-20">
+            <button
+                class="group relative flex items-center justify-between border border-white/30 rounded-full pl-2 pr-6 py-2 bg-transparent hover:bg-white/5 transition-all text-sm uppercase tracking-wider w-48 h-14">
+                <div
+                    class="flex items-center justify-center w-10 h-10 bg-white rounded-full mr-3 group-hover:scale-90 transition-transform">
+                    <div class="flex gap-0.5">
+                        <div class="w-1.5 h-1.5 bg-black rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-black rounded-full"></div>
+                    </div>
+                </div>
+                <span>Learn More</span>
+            </button>
+            <button
+                class="flex items-center justify-between bg-primary text-black rounded-full pl-6 pr-2 py-2 hover:bg-gray-200 transition-all text-sm uppercase tracking-wider font-bold w-48 h-14">
+                <span>Buy A Coin</span>
+                <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center ml-3">
+                    <span class="material-symbols-outlined text-lg transform rotate-[315deg]">arrow_forward</span>
+                </div>
+            </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-4 md:px-8 pb-24">
+            <div
+                class="relative group h-[340px] rounded-[3rem] p-1 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 transition-transform hover:-translate-y-2 duration-300">
+                <div class="absolute top-4 right-6 text-right z-10">
+                    <p class="font-mono text-white text-sm opacity-80">$0.0870641</p>
+                    <p class="font-mono text-red-200 text-xs">▼ 1.89</p>
+                </div>
+                <div
+                    class="w-full h-full flex items-end justify-center pb-12 relative overflow-hidden rounded-[2.8rem]">
+                    <div class="absolute inset-0 bg-white/10"></div>
+                    <div
+                        class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-lg">
+                        <img alt="Polkadot Logo" class="w-14 h-14 brightness-0 invert"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDclhtq_RPgvBOPHmB7I6W-45Qg6CKLeHrWp0U3rxgr5wT86Ol9IJWwDbhVg1H1UCpcB6i5qLB48lKzZ3v2eum4WagM1_6ZdWvBGaB1nZD0wn2DFYafpCzMC_zTEAHuOyo6YrkFbHLrrBXXGfa9G-cDytQYdOoYUgniDr63KNNv1NehphWHR6p17ydB5ZDD4c-_ZRpFka6ifHbc9mAwyvQ_1BsQlaj37s_unlrJ03vcLq6Gavido1XajA6VSIArAkqkVV5yDuym0zQN" />
+                    </div>
+                </div>
+            </div>
+            <div
+                class="relative group h-[340px] rounded-[3rem] p-1 bg-gradient-to-br from-cyan-300 via-blue-400 to-blue-200 transition-transform hover:-translate-y-2 duration-300">
+                <div class="absolute top-4 right-6 text-right z-10">
+                    <p class="font-mono text-white text-sm opacity-80">51.5345678</p>
+                    <p class="font-mono text-red-100 text-xs">▼ 2.55</p>
+                </div>
+                <div
+                    class="w-full h-full flex items-end justify-center pb-12 relative overflow-hidden rounded-[2.8rem]">
+                    <div class="absolute inset-0 bg-white/10"></div>
+                    <div
+                        class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-lg">
+                        <img alt="Cardano Logo" class="w-14 h-14 brightness-0 invert"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuARLOHbLSDdRSZPAAj0_76eo9h8F_F05I_f-IMDWKXM-HQ-7l6dP5Igzof0WbQqeXOELmLQU_Ti2ttM7QacyDyP5vXhqB5Th3WlWMFgm5UaDaVqdultBbG4rOgSo5W9iFkyh-ZwVd2HTZNMuKTbRVxHbEQXB6U32pd4CgYUkiduvnUBme2PXptHQ-GFg0m3Y3CloAeqoswiNKI9Ljk-pcjRvv-yDW0cjl8lADASOLidyzSS5f2Yz-_AaerIfK2MtotkGeDNMbHPoRa3" />
+                    </div>
+                </div>
+            </div>
+            <div
+                class="relative group h-[340px] rounded-[3rem] p-1 bg-gradient-to-br from-purple-200 via-purple-400 to-indigo-500 transition-transform hover:-translate-y-2 duration-300">
+                <div class="absolute top-4 right-6 text-right z-10">
+                    <p class="font-mono text-white text-sm opacity-80">51.5678001</p>
+                    <p class="font-mono text-red-200 text-xs">▼ 3.15</p>
+                </div>
+                <div
+                    class="w-full h-full flex items-end justify-center pb-12 relative overflow-hidden rounded-[2.8rem]">
+                    <div class="absolute inset-0 bg-white/10"></div>
+                    <div
+                        class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-lg">
+                        <img alt="Solana Logo" class="w-14 h-14 brightness-0 invert"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXonZ7F7ry5H-RZ0P3x_4QDH5X0to_0oSx55sPoW0rzkQC-2sdac_7fHhq-GBwAyio7lzaMvFc7sIw5mmil3KTwNsbZeB7tZqg8pBSglw-ZaKxK-QAwVQBB6nFNgYm3Zo957EZqdnvZUmqR1j_Y4Ad2s7ewsq69tJieI9GtVz0m_9ADHnKAyF1cUnjYZ-Dh3BWbT5PRvb0vNOnQabamoIcL2QoF0kWp_w3z4TSpAmhZVa_OM5kRWIC_g5Dot6KV0_GwnNFjBVYidps" />
+                    </div>
+                </div>
+            </div>
+            <div
+                class="relative group h-[340px] rounded-[3rem] p-1 bg-gradient-to-br from-lime-400 via-yellow-400 to-pink-500 transition-transform hover:-translate-y-2 duration-300">
+                <div class="absolute top-4 right-6 text-right z-10">
+                    <p class="font-mono text-white text-sm opacity-80">52,3458780</p>
+                    <p class="font-mono text-red-200 text-xs">▼ 4.75</p>
+                </div>
+                <div
+                    class="w-full h-full flex items-end justify-center pb-12 relative overflow-hidden rounded-[2.8rem]">
+                    <div class="absolute inset-0 bg-white/10"></div>
+                    <div
+                        class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-lg">
+                        <img alt="Bitcoin Logo" class="w-14 h-14 brightness-0 invert"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnKDl51iHVCjw86gf_E4IuENNvumP7KT8M2oiN1dLpBc7mf68LwUTNje7gGgF4TCPr-oXkORK-XhjhOexIxsZxRHPoi2QY8myL0o2f-p7Sd59qLzFfbrU57F2jj_MomEt6CH9A2_OReXZLmH_wO3euGYzMvIxf4leQG7Fg2srv75_Rp7Hl-nwwRNSY44z9tuCw5Bv7W8T96Ft7Spid62ECpobAnTo6nnU_lkVVngZ8aeHlC7dP45hIC5w42GTkWnR-mJd3-N664KVI" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full bg-white/5 border-t border-white/10 pt-20 pb-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="space-y-6 col-span-1 md:col-span-1">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-white rounded-full"></div>
+                        <div class="w-4 h-4 bg-white/70 rounded-full -ml-1.5"></div>
+                        <div class="w-4 h-4 bg-white/40 rounded-full -ml-1.5"></div>
+                    </div>
+                    <span class="text-lg font-bold tracking-tighter ml-1">WALLE</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                    The leading decentralized finance solution for the modern digital economy. Fast, secure, and
+                    intuitive.
+                </p>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-white text-sm font-mono uppercase tracking-widest font-bold">Links</h4>
+                <ul class="space-y-4 text-sm text-gray-400">
+                    <li><a class="hover:text-white transition-colors" href="#">Home</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">How It Works</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">About</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-white text-sm font-mono uppercase tracking-widest font-bold">Social</h4>
+                <ul class="space-y-4 text-sm text-gray-400">
+                    <li><a class="hover:text-white transition-colors flex items-center gap-2" href="#"><span
+                                class="material-symbols-outlined text-base">alternate_email</span> Twitter</a></li>
+                    <li><a class="hover:text-white transition-colors flex items-center gap-2" href="#"><span
+                                class="material-symbols-outlined text-base">chat</span> Discord</a></li>
+                    <li><a class="hover:text-white transition-colors flex items-center gap-2" href="#"><span
+                                class="material-symbols-outlined text-base">forum</span> Telegram</a></li>
+                    <li><a class="hover:text-white transition-colors flex items-center gap-2" href="#"><span
+                                class="material-symbols-outlined text-base">share</span> LinkedIn</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-white text-sm font-mono uppercase tracking-widest font-bold">Documentation</h4>
+                <ul class="space-y-4 text-sm text-gray-400">
+                    <li><a class="hover:text-white transition-colors" href="#">Whitepaper</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">API Reference</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">GitHub</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-gray-500 text-xs font-mono">© 2024 WALLE TECHNOLOGIES. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-8">
+                <a class="text-gray-500 hover:text-white text-xs font-mono uppercase transition-colors" href="#">Terms
+                    of Service</a>
+                <a class="text-gray-500 hover:text-white text-xs font-mono uppercase transition-colors" href="#">Cookie
+                    Policy</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

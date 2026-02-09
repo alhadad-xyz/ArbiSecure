@@ -54,6 +54,8 @@ impl ArbiSecureEscrow {
     }
 
     /// Create a new escrow deal
+    /// Create a new escrow deal
+    #[payable]
     pub fn create_deal(
         &mut self,
         freelancer: Address,
@@ -62,6 +64,11 @@ impl ArbiSecureEscrow {
     ) -> Result<U256, Vec<u8>> {
         let deal_id = self.deal_count.get();
         let client = msg::sender();
+
+        // Check if value is sent (One-Click Fund)
+        if msg::value() != amount {
+             return Err(IncorrectAmount{}.encode());
+        }
         
         let mut client_storage = self.deals_client.setter(deal_id);
         client_storage.set(client);
@@ -75,14 +82,21 @@ impl ArbiSecureEscrow {
         let mut arbiter_storage = self.deals_arbiter.setter(deal_id);
         arbiter_storage.set(arbiter);
 
+        // Set status to Funded immediately since we require payment
         let mut status_storage = self.deals_status.setter(deal_id);
-        status_storage.set(U256::from(DealStatus::Pending as u8));
+        status_storage.set(U256::from(DealStatus::Funded as u8));
 
         let mut created_at_storage = self.deals_created_at.setter(deal_id);
         created_at_storage.set(U256::from(block::timestamp()));
 
         let new_count = deal_id + U256::from(1);
         self.deal_count.set(new_count);
+
+        // Emit event
+        evm::log(DealFunded {
+            deal_id,
+            amount,
+        });
 
         Ok(deal_id)
     }
