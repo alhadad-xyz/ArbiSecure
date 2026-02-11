@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
         const body: CreateDealInput = await request.json();
 
         // Validate required fields
-        const { freelancer, amount, arbiter, title } = body;
-        if (!freelancer || !amount || !arbiter || !title) {
+        const { freelancer, client, amount, arbiter, title } = body;
+        if (!freelancer || !client || !amount || !arbiter || !title) {
             return NextResponse.json(
-                { error: 'Missing required fields' },
+                { error: 'Missing required fields: freelancer, client, amount, arbiter, title' },
                 { status: 400 }
             );
         }
@@ -20,10 +20,12 @@ export async function POST(request: NextRequest) {
             .from('deals')
             .insert({
                 freelancer,
+                client,
                 amount,
                 arbiter,
                 title,
                 description: body.description || '',
+                milestones: body.milestones || [],
                 status: 'pending'
             })
             .select()
@@ -32,7 +34,7 @@ export async function POST(request: NextRequest) {
         if (error) {
             console.error('Database error:', error);
             return NextResponse.json(
-                { error: 'Failed to create deal' },
+                { error: `Database error: ${error.message || 'Failed to create deal'}` },
                 { status: 500 }
             );
         }

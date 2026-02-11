@@ -3,16 +3,25 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlassInput from "./GlassInput";
+import MilestoneBuilder from "./MilestoneBuilder";
+import ConditionConfigurator from "./ConditionConfigurator";
+import { QRCodeSVG } from "qrcode.react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { toast } from "sonner";
 import { parseEther } from "viem";
 import { ARBISECURE_ABI, CONTRACT_ADDRESS } from "@/lib/abi";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
+import { DealFormData, Milestone, generateMilestoneId, validateMilestones } from "@/lib/types";
 
 export default function CreateDealWizard() {
     const router = useRouter();
-    const { address } = useAccount();
+    // MOCK MODE: Bypass wallet connection for dev
+    const MOCK_MODE = true;
+    const { address: realAddress } = useAccount();
+    const address = MOCK_MODE ? "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" : realAddress;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { writeContract, data: hash, isPending: isWritePending } = useWriteContract();
 
     // In a real app, we would wait for the transaction receipt to get the deal ID from logs
@@ -23,21 +32,26 @@ export default function CreateDealWizard() {
     const [step, setStep] = useState(1);
     const [showConfetti, setShowConfetti] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [formData, setFormData] = useState({
+    const [generatedLink, setGeneratedLink] = useState<string | null>(null);
+    const [currentMilestoneIndex, setCurrentMilestoneIndex] = useState(0); // Track which milestone we're configuring
+    const [formData, setFormData] = useState<DealFormData>({
         title: "",
         description: "",
-        amount: "",
+        totalAmount: "",
         freelancer: "", // Freelancer wallet address (who gets paid)
         client: "", // Client wallet address (who will fund the deal)
-        arbiter: ""
+        arbiter: "",
+        milestones: [
+            // Default: single milestone with 100%
+            {
+                id: generateMilestoneId(),
+                name: "Full Payment",
+                percentage: 100,
+                amount: "0",
+                conditions: []
+            }
+        ]
     });
-
-    // Auto-populate freelancer address when wallet connects
-    useEffect(() => {
-        if (address && !formData.freelancer) {
-            setFormData(prev => ({ ...prev, freelancer: address }));
-        }
-    }, [address, formData.freelancer]);
 
     const handleNext = () => setStep(prev => prev + 1);
     const handleBack = () => setStep(prev => Math.max(1, prev - 1));
@@ -54,7 +68,7 @@ export default function CreateDealWizard() {
             return;
         }
 
-        if (!formData.amount || parseFloat(formData.amount) <= 0) {
+        if (!formData.totalAmount || parseFloat(formData.totalAmount) <= 0) {
             toast.error("Please enter a valid amount greater than 0");
             return;
         }
@@ -70,7 +84,7 @@ export default function CreateDealWizard() {
             return;
         }
 
-        if (parseFloat(formData.amount) > 1000000) {
+        if (parseFloat(formData.totalAmount) > 1000000) {
             toast.error("Amount cannot exceed 1,000,000 ETH");
             return;
         }
@@ -88,6 +102,13 @@ export default function CreateDealWizard() {
 
         if (formData.freelancer.toLowerCase() === formData.client.toLowerCase()) {
             toast.error("Freelancer and client cannot be the same address");
+            return;
+        }
+
+        // Validate milestones
+        const validation = validateMilestones(formData.milestones);
+        if (!validation.isValid) {
+            toast.error(validation.errors[0]); // Show first error
             return;
         }
 
@@ -121,30 +142,32 @@ export default function CreateDealWizard() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     freelancer: formData.freelancer,
-                    amount: formData.amount,
+                    client: formData.client,
+                    amount: formData.totalAmount, // Backward compat: API uses 'amount'
+                    totalAmount: formData.totalAmount,
                     arbiter: formData.arbiter,
                     title: formData.title,
-                    description: formData.description
+                    description: formData.description,
+                    milestones: formData.milestones // V3: Include milestone data
                 })
             });
 
             if (!response.ok) {
-                throw new Error('Failed to create deal');
+                const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                throw new Error(errorData.error || 'Failed to create deal');
             }
 
             const { dealId, link } = await response.json();
 
-            // Copy to clipboard
-            navigator.clipboard.writeText(link);
+            // Store the generated link
+            setGeneratedLink(link);
 
             // Trigger confetti!
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 5000);
 
-            toast.success("Link Copied!", {
-                description: "Share this link with your client to fund the deal.",
-                duration: 5000,
-            });
+            // Move to success step (step 7)
+            setStep(7);
 
         } catch (error) {
             console.error("Error generating link:", error);
@@ -182,10 +205,15 @@ export default function CreateDealWizard() {
             )}
             {/* Step Indicator (Minimal) */}
             <div className="flex items-center gap-2 mb-12">
-                {[1, 2, 3, 4].map((s) => (
+                {[1, 2, 3, 4, 5, 6, 7].map((s) => (
                     <div
                         key={s}
-                        className={`h-1 flex-1 rounded-full transition-all duration-500 ${s <= step ? "bg-white shadow-[0_0_10px_-2px_rgba(255,255,255,0.5)]" : "bg-white/10"}`}
+                        className={`h-1 flex-1 rounded-full transition-all duration-500 ${s === step
+                            ? "bg-white shadow-[0_0_20px_0px_rgba(255,255,255,0.8)]" // Current step - bright glow
+                            : s < step
+                                ? "bg-white/80 shadow-[0_0_8px_-2px_rgba(255,255,255,0.4)]" // Completed steps
+                                : "bg-white/10" // Future steps
+                            }`}
                     ></div>
                 ))}
             </div>
@@ -224,6 +252,17 @@ export default function CreateDealWizard() {
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                 />
                             </div>
+
+                            {/* Navigation */}
+                            <div className="flex justify-end pt-6">
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!formData.title.trim()}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Next →
+                                </button>
+                            </div>
                         </motion.div>
                     )}
 
@@ -246,9 +285,9 @@ export default function CreateDealWizard() {
                                 <div className="flex-grow">
                                     <GlassInput
                                         label="Total Amount"
-                                        value={formData.amount}
+                                        value={formData.totalAmount}
                                         type="number"
-                                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                                        onChange={(e) => setFormData({ ...formData, totalAmount: e.target.value })}
                                         placeholder="0.00"
                                         isHuge
                                         autoFocus
@@ -276,12 +315,140 @@ export default function CreateDealWizard() {
                             <p className="text-xs text-gray-500 font-mono">
                                 * Protocol secures Native ETH on Arbitrum One/Sepolia.
                             </p>
+
+                            {/* Navigation */}
+                            <div className="flex justify-between pt-6">
+                                <button
+                                    onClick={handleBack}
+                                    className="px-8 py-3 bg-white/10 text-white font-mono text-sm rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!formData.totalAmount || parseFloat(formData.totalAmount) <= 0}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Next →
+                                </button>
+                            </div>
                         </motion.div>
                     )}
 
                     {step === 3 && (
                         <motion.div
                             key="step3"
+                            variants={variants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            custom={step}
+                            className="space-y-8"
+                        >
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-header text-white">Payment Milestones</h2>
+                                <p className="text-gray-400 font-mono text-sm">Break down the payment into stages.</p>
+                            </div>
+
+                            <MilestoneBuilder
+                                totalAmount={formData.totalAmount}
+                                milestones={formData.milestones}
+                                onChange={(milestones) => {
+                                    // Recalculate amounts for all milestones
+                                    const updated = milestones.map(m => ({
+                                        ...m,
+                                        amount: ((parseFloat(formData.totalAmount) || 0) * m.percentage / 100).toFixed(4)
+                                    }));
+                                    setFormData({ ...formData, milestones: updated });
+                                }}
+                            />
+
+                            {/* Navigation */}
+                            <div className="flex justify-between pt-6">
+                                <button
+                                    onClick={handleBack}
+                                    className="px-8 py-3 bg-white/10 text-white font-mono text-sm rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!validateMilestones(formData.milestones).isValid}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 4 && (
+                        <motion.div
+                            key="step4"
+                            variants={variants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            custom={step}
+                            className="space-y-8"
+                        >
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-header text-white">Release Conditions</h2>
+                                <p className="text-gray-400 font-mono text-sm">Set criteria for releasing each milestone payment.</p>
+                            </div>
+
+                            <div className="space-y-6">
+                                {/* Milestone selector */}
+                                <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                                    {formData.milestones.map((milestone, index) => (
+                                        <button
+                                            key={milestone.id}
+                                            onClick={() => setCurrentMilestoneIndex(index)}
+                                            className={`px-4 py-2 rounded-lg font-mono text-sm whitespace-nowrap transition-all ${currentMilestoneIndex === index
+                                                ? 'bg-white text-black'
+                                                : 'bg-white/5 text-white/60 hover:bg-white/10'
+                                                }`}
+                                        >
+                                            #{index + 1} {milestone.name}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Condition configurator for selected milestone */}
+                                <ConditionConfigurator
+                                    milestoneIndex={currentMilestoneIndex}
+                                    milestoneName={formData.milestones[currentMilestoneIndex]?.name || ''}
+                                    conditions={formData.milestones[currentMilestoneIndex]?.conditions || []}
+                                    onChange={(conditions) => {
+                                        const updatedMilestones = formData.milestones.map((m, i) =>
+                                            i === currentMilestoneIndex ? { ...m, conditions } : m
+                                        );
+                                        setFormData({ ...formData, milestones: updatedMilestones });
+                                    }}
+                                />
+                            </div>
+
+                            {/* Navigation */}
+                            <div className="flex justify-between pt-6">
+                                <button
+                                    onClick={handleBack}
+                                    className="px-8 py-3 bg-white/10 text-white font-mono text-sm rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all"
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 5 && (
+                        <motion.div
+                            key="step5"
                             variants={variants}
                             initial="enter"
                             animate="center"
@@ -315,10 +482,26 @@ export default function CreateDealWizard() {
                                 ℹ️ The arbiter holds the key to resolve disputes.
                                 By selecting ArbiSecure, you agree to our dispute resolution terms.
                             </p>
+
+                            {/* Navigation */}
+                            <div className="flex justify-between pt-6">
+                                <button
+                                    onClick={handleBack}
+                                    className="px-8 py-3 bg-white/10 text-white font-mono text-sm rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all"
+                                >
+                                    Review →
+                                </button>
+                            </div>
                         </motion.div>
                     )}
 
-                    {step === 4 && (
+                    {step === 6 && (
                         <motion.div
                             key="step4"
                             variants={variants}
@@ -329,65 +512,115 @@ export default function CreateDealWizard() {
                             className="space-y-8"
                         >
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-header text-white">Review & Generate</h2>
-                                <p className="text-gray-400 font-mono text-sm">Confirm details before creating the secure link.</p>
+                                <h2 className="text-3xl font-header text-white">Review & Confirm</h2>
+                                <p className="text-gray-400 font-mono text-sm">Double-check the details before creating your escrow deal.</p>
                             </div>
 
-                            <div className="space-y-6 bg-white/5 p-6 rounded-2xl border border-white/10">
-                                <div>
-                                    <label className="text-xs font-mono text-gray-500 uppercase">Agreement</label>
-                                    <p className="text-xl font-header text-white">{formData.title}</p>
+                            <div className="space-y-4 bg-white/5 p-6 rounded-2xl border border-white/10">
+                                <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Agreement</span>
+                                    <span className="text-white font-header">{formData.title}</span>
                                 </div>
-                                <div>
-                                    <label className="text-xs font-mono text-gray-500 uppercase">Amount</label>
-                                    <p className="text-2xl font-header text-white">{formData.amount} <span className="text-sm text-gray-400">ETH</span></p>
+                                {formData.description && (
+                                    <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                                        <span className="text-gray-400 font-mono text-xs uppercase">Description</span>
+                                        <span className="text-white text-sm max-w-xs text-right">{formData.description}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Total Amount</span>
+                                    <span className="text-white font-header text-2xl">{formData.totalAmount} ETH</span>
                                 </div>
-                                <div>
-                                    <label className="text-xs font-mono text-gray-500 uppercase">Freelancer (Who gets paid)</label>
-                                    <p className="font-mono text-sm text-gray-300 break-all">{formData.freelancer || "Not specified"}</p>
+                                <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Client</span>
+                                    <span className="text-white font-mono text-xs">{formData.client}</span>
                                 </div>
-                                <div>
-                                    <label className="text-xs font-mono text-gray-500 uppercase">Client (Who will fund)</label>
-                                    <p className="font-mono text-sm text-gray-300 break-all">{formData.client || "Not specified"}</p>
+                                <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Freelancer</span>
+                                    <span className="text-white font-mono text-xs">{formData.freelancer}</span>
                                 </div>
-                                <div>
-                                    <label className="text-xs font-mono text-gray-500 uppercase">Arbiter</label>
-                                    <p className="font-mono text-sm text-gray-300 break-all">{formData.arbiter}</p>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Arbiter</span>
+                                    <span className="text-white font-mono text-xs">{formData.arbiter || "Platform Arbiter"}</span>
                                 </div>
+                            </div>
+
+                            {/* Navigation */}
+                            <div className="flex justify-between pt-6">
+                                <button
+                                    onClick={handleBack}
+                                    className="px-8 py-3 bg-white/10 text-white font-mono text-sm rounded-lg hover:bg-white/20 transition-all"
+                                >
+                                    ← Back
+                                </button>
+                                <button
+                                    onClick={handleGenerateLink}
+                                    disabled={isGenerating}
+                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isGenerating ? 'Generating...' : '✨ Generate Deal Link'}
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 7 && generatedLink && (
+                        <motion.div
+                            key="step5"
+                            variants={variants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            custom={step}
+                            className="space-y-8"
+                        >
+                            <div className="space-y-2 text-center">
+                                <h2 className="text-3xl font-header text-white">Deal Created! 🎉</h2>
+                                <p className="text-gray-400 font-mono text-sm">Share this link with your client to fund the escrow.</p>
+                            </div>
+
+                            {/* QR Code */}
+                            <div className="flex justify-center">
+                                <div className="bg-white p-6 rounded-2xl shadow-2xl">
+                                    <QRCodeSVG
+                                        value={generatedLink}
+                                        size={256}
+                                        level="H"
+                                        includeMargin={true}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Link Display */}
+                            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
+                                <p className="text-gray-400 font-mono text-xs uppercase mb-2">Deal Link</p>
+                                <p className="text-white font-mono text-sm break-all">{generatedLink}</p>
+                            </div>
+
+                            {/* Copy Button */}
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(generatedLink);
+                                    toast.success("Link copied to clipboard!");
+                                }}
+                                className="w-full bg-white text-black py-4 rounded-full font-bold font-nav text-lg hover:bg-gray-200 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] relative overflow-hidden group"
+                            >
+                                <span className="relative z-10">Copy Link</span>
+                                <div className="absolute inset-0 bg-white/40 skew-x-12 -translate-x-full group-hover:animate-shine"></div>
+                            </button>
+
+                            {/* Back to Home */}
+                            <div className="text-center pt-4">
+                                <button
+                                    onClick={() => router.push('/')}
+                                    className="text-gray-400 hover:text-white font-mono text-sm transition-colors"
+                                >
+                                    ← Back to Home
+                                </button>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-
-                {/* Navigation */}
-                <div className="flex justify-between items-center mt-12 pt-8 border-t border-white/5">
-                    <button
-                        onClick={handleBack}
-                        className={`text-sm font-mono text-gray-500 hover:text-white transition-colors ${step === 1 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-                    >
-                        ← Back
-                    </button>
-
-                    {step < 4 ? (
-                        <button
-                            onClick={handleNext}
-                            disabled={!formData.title && step === 1 || !formData.amount && step === 2 || !formData.arbiter && step === 3}
-                            className="group flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold font-nav hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Continue
-                            <span className="group-hover:translate-x-1 transition-transform">→</span>
-                        </button>
-                    ) : (
-                        <button
-                            onClick={handleGenerateLink}
-                            disabled={isGenerating}
-                            className="w-full bg-white text-black py-4 rounded-full font-bold font-nav text-lg hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] relative overflow-hidden group"
-                        >
-                            {isGenerating ? "Generating..." : "Generate & Copy Link"}
-                            <div className="absolute inset-0 bg-white/40 skew-x-12 -translate-x-full group-hover:animate-shine"></div>
-                        </button>
-                    )}
-                </div>
             </div>
         </div>
     );

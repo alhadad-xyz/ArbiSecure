@@ -12,13 +12,21 @@ if (!supabaseUrl || !supabaseKey) {
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Database types
+export interface Milestone {
+    title: string;
+    amount: string;
+    description?: string;
+}
+
 export interface Deal {
     id: string;
     freelancer: string;
+    client: string;
     amount: string;
     arbiter: string;
     title: string;
     description: string;
+    milestones: Milestone[];
     contract_deal_id?: number;
     status: 'pending' | 'funded' | 'completed';
     created_at: string;
@@ -26,3 +34,4 @@ export interface Deal {
 }
 
 export type CreateDealInput = Omit<Deal, 'id' | 'created_at' | 'updated_at' | 'contract_deal_id' | 'status'>;
+

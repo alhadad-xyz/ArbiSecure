@@ -26,6 +26,23 @@ export const ARBISECURE_ABI = [
     },
     {
         "type": "function",
+        "name": "initiate_dispute",
+        "inputs": [{ "name": "deal_id", "type": "uint256" }],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "arbiter_resolve",
+        "inputs": [
+            { "name": "deal_id", "type": "uint256" },
+            { "name": "release_to_freelancer", "type": "bool" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
         "name": "get_deal_status",
         "inputs": [{ "name": "deal_id", "type": "uint256" }],
         "outputs": [{ "name": "status", "type": "uint256" }],
@@ -46,6 +63,31 @@ export const ARBISECURE_ABI = [
         "stateMutability": "view"
     },
     {
+        "type": "function",
+        "name": "get_deal_client",
+        "inputs": [{ "name": "deal_id", "type": "uint256" }],
+        "outputs": [{ "name": "client", "type": "address" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "get_deal_arbiter",
+        "inputs": [{ "name": "deal_id", "type": "uint256" }],
+        "outputs": [{ "name": "arbiter", "type": "address" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "event",
+        "name": "DealCreated",
+        "inputs": [
+            { "name": "deal_id", "type": "uint256", "indexed": true },
+            { "name": "client", "type": "address", "indexed": false },
+            { "name": "freelancer", "type": "address", "indexed": false },
+            { "name": "amount", "type": "uint256", "indexed": false }
+        ],
+        "anonymous": false
+    },
+    {
         "type": "event",
         "name": "DealFunded",
         "inputs": [
@@ -61,6 +103,23 @@ export const ARBISECURE_ABI = [
             { "name": "deal_id", "type": "uint256", "indexed": true },
             { "name": "freelancer", "type": "address", "indexed": false },
             { "name": "amount", "type": "uint256", "indexed": false }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "DealDisputed",
+        "inputs": [
+            { "name": "deal_id", "type": "uint256", "indexed": true }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "DealResolved",
+        "inputs": [
+            { "name": "deal_id", "type": "uint256", "indexed": true },
+            { "name": "released_to_freelancer", "type": "bool", "indexed": false }
         ],
         "anonymous": false
     }

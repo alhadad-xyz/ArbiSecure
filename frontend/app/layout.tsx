@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import DevTools from "@/components/DevTools";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} antialiased bg-background-light dark:bg-background-dark text-gray-900 dark:text-white transition-colors duration-300`}
       >
         <Providers>{children}</Providers>
+        <DevTools />
       </body>
     </html>
   );
