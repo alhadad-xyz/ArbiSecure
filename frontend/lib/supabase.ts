@@ -15,7 +15,9 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export interface Milestone {
     title: string;
     amount: string;
+    percentage: number;
     description?: string;
+    status?: 'pending' | 'released';
 }
 
 export interface Deal {

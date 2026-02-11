@@ -45,7 +45,7 @@ export default function CreateDealWizard() {
             // Default: single milestone with 100%
             {
                 id: generateMilestoneId(),
-                name: "Full Payment",
+                title: "Full Payment",
                 percentage: 100,
                 amount: "0",
                 conditions: []
@@ -409,7 +409,7 @@ export default function CreateDealWizard() {
                                                 : 'bg-white/5 text-white/60 hover:bg-white/10'
                                                 }`}
                                         >
-                                            #{index + 1} {milestone.name}
+                                            #{index + 1} {milestone.title}
                                         </button>
                                     ))}
                                 </div>
@@ -417,7 +417,7 @@ export default function CreateDealWizard() {
                                 {/* Condition configurator for selected milestone */}
                                 <ConditionConfigurator
                                     milestoneIndex={currentMilestoneIndex}
-                                    milestoneName={formData.milestones[currentMilestoneIndex]?.name || ''}
+                                    milestoneName={formData.milestones[currentMilestoneIndex]?.title || ''}
                                     conditions={formData.milestones[currentMilestoneIndex]?.conditions || []}
                                     onChange={(conditions) => {
                                         const updatedMilestones = formData.milestones.map((m, i) =>

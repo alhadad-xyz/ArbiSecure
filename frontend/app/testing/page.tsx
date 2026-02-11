@@ -96,7 +96,7 @@ export default function TestingPage() {
             writeContract({
                 address: CONTRACT_ADDRESS,
                 abi: ARBISECURE_ABI,
-                functionName: "dispute",
+                functionName: "initiate_dispute",
                 args: [BigInt(testData.dealId)],
             });
         } catch (error) {

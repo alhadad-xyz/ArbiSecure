@@ -26,7 +26,7 @@ export interface MilestoneCondition {
 
 export interface Milestone {
     id: string;
-    name: string;
+    title: string;
     percentage: number;
     amount: string; // calculated from totalAmount * percentage
     description?: string;
@@ -62,7 +62,7 @@ export interface MilestoneTemplate {
     name: string;
     description: string;
     milestones: Array<{
-        name: string;
+        title: string;
         percentage: number;
         defaultConditions?: Partial<MilestoneCondition>[];
     }>;
@@ -73,27 +73,27 @@ export const MILESTONE_TEMPLATES: MilestoneTemplate[] = [
         name: 'Two-Phase (50/50)',
         description: 'Equal split for simple projects',
         milestones: [
-            { name: 'Initial Deposit', percentage: 50 },
-            { name: 'Final Payment', percentage: 50 }
+            { title: 'Initial Deposit', percentage: 50 },
+            { title: 'Final Payment', percentage: 50 }
         ]
     },
     {
         name: 'Three-Phase (30/50/20)',
         description: 'Design, Development, Testing',
         milestones: [
-            { name: 'Design Phase', percentage: 30 },
-            { name: 'Development', percentage: 50 },
-            { name: 'Testing & Deploy', percentage: 20 }
+            { title: 'Design Phase', percentage: 30 },
+            { title: 'Development', percentage: 50 },
+            { title: 'Testing & Deploy', percentage: 20 }
         ]
     },
     {
         name: 'Four-Phase (25/25/25/25)',
         description: 'Quarterly milestones',
         milestones: [
-            { name: 'Milestone 1', percentage: 25 },
-            { name: 'Milestone 2', percentage: 25 },
-            { name: 'Milestone 3', percentage: 25 },
-            { name: 'Milestone 4', percentage: 25 }
+            { title: 'Milestone 1', percentage: 25 },
+            { title: 'Milestone 2', percentage: 25 },
+            { title: 'Milestone 3', percentage: 25 },
+            { title: 'Milestone 4', percentage: 25 }
         ]
     }
 ];
@@ -117,7 +117,7 @@ export function validateMilestones(milestones: Milestone[]): ValidationResult {
     // Check if each milestone has at least one condition
     milestones.forEach((milestone, index) => {
         if (milestone.conditions.length === 0) {
-            warnings.push(`Milestone ${index + 1} (${milestone.name}) has no release conditions`);
+            warnings.push(`Milestone ${index + 1} (${milestone.title}) has no release conditions`);
         }
     });
 

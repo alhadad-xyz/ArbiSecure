@@ -17,7 +17,7 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
     const addMilestone = () => {
         const newMilestone: Milestone = {
             id: generateMilestoneId(),
-            name: `Milestone ${milestones.length + 1}`,
+            title: `Milestone ${milestones.length + 1}`,
             percentage: 0,
             amount: "0",
             conditions: []
@@ -48,7 +48,7 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
         const template = MILESTONE_TEMPLATES[templateIndex];
         const newMilestones: Milestone[] = template.milestones.map((tm, index) => ({
             id: generateMilestoneId(),
-            name: tm.name,
+            title: tm.title,
             percentage: tm.percentage,
             amount: calculateMilestoneAmount(totalAmount, tm.percentage),
             conditions: []
@@ -141,8 +141,8 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
                                 <span className="text-white/40 font-mono text-xs">#{index + 1}</span>
                                 <div className="flex-grow">
                                     <GlassInput
-                                        value={milestone.name}
-                                        onChange={(e) => updateMilestone(milestone.id, { name: e.target.value })}
+                                        value={milestone.title}
+                                        onChange={(e) => updateMilestone(milestone.id, { title: e.target.value })}
                                         placeholder="Milestone name"
                                     />
                                 </div>
