@@ -9,7 +9,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { toast } from "sonner";
 import { parseEther } from "viem";
-import { ARBISECURE_ABI, CONTRACT_ADDRESS } from "@/lib/abi";
+import { ARBISECURE_ABI, CONTRACT_ADDRESS, PLATFORM_ARBITER_ADDRESS } from "@/lib/abi";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 import { DealFormData, Milestone, generateMilestoneId, validateMilestones } from "@/lib/types";
@@ -471,7 +471,7 @@ export default function CreateDealWizard() {
 
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => setFormData({ ...formData, arbiter: "0x1234567890123456789012345678901234567890" })}
+                                    onClick={() => setFormData({ ...formData, arbiter: PLATFORM_ARBITER_ADDRESS })}
                                     className="text-xs font-mono text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/40 rounded px-3 py-1"
                                 >
                                     Use ArbiSecure Platform
