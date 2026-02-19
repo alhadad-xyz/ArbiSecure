@@ -4,16 +4,13 @@
 #[macro_use]
 extern crate alloc;
 
-use alloc::string::String;
 use alloc::vec::Vec;
 use alloy_sol_types::sol;
 use stylus_sdk::{
-    alloy_primitives::{Address, U256, U64, U8},
+    alloy_primitives::{Address, U256, U8},
     evm,
     prelude::*,
 };
-
-use stylus_sdk::call::Call;
 
 // ============================================================================
 // Enums
@@ -138,7 +135,7 @@ sol_interface! {
 
 #[public]
 impl ArbiSecure {
-    /// Initialize the contract sets admin
+    /// Initializes the contract and sets the deployer as the initial admin.
     pub fn initialize(&mut self) {
         let caller = self.vm().msg_sender();
         if self.admin.get() != Address::ZERO {
@@ -148,7 +145,7 @@ impl ArbiSecure {
         self.deal_counter.set(U256::ZERO);
     }
 
-    /// Transfer admin rights
+    /// Transfers administrator privileges to a new designated address.
     pub fn transfer_admin(&mut self, new_admin: Address) {
         let caller = self.vm().msg_sender();
         let admin = self.admin.get();
@@ -159,11 +156,14 @@ impl ArbiSecure {
         self.admin.set(new_admin);
     }
 
-    /// Get the current admin address
+    /// Retrieves the current admnistrator's address.
     pub fn admin(&self) -> Address {
         self.admin.get()
     }
 
+    /// Creates a new escrow deal with programmable milestones.
+    /// Requires that the caller provides the total necessary deal funds,
+    /// either via native ETH or an approved ERC20 token transfer.
     #[payable]
     pub fn create_deal(
         &mut self,
@@ -202,8 +202,7 @@ impl ArbiSecure {
         } else {
             let token_contract = IERC20::new(token);
             let contract_address = self.vm().contract_address();
-            let config = Call::new_in(self);
-            let result = token_contract.transfer_from(config, caller, contract_address, amount);
+            let result = token_contract.transfer_from(&mut *self, caller, contract_address, amount);
             match result {
                 Ok(success) => {
                     require(success, "TknF");
@@ -254,7 +253,8 @@ impl ArbiSecure {
         deal_id
     }
 
-    /// Releases funds for a milestone if all conditions are met
+    /// Releases the specified milestone's funds to the freelancer if all required
+    /// conditions, such as time locks and manual client approvals, are satisfied.
     #[allow(deprecated)]
     pub fn release_milestone(&mut self, deal_id: U256, milestone_index: U256) {
         let caller = self.vm().msg_sender();
@@ -326,10 +326,8 @@ impl ArbiSecure {
             // ETH Transfer
             let _ = self.vm().transfer_eth(freelancer, amount);
         } else {
-            // ERC20 Transfer
             let token = IERC20::new(token_addr);
-            let config = Call::new_in(self);
-            let result = token.transfer(config, freelancer, amount);
+            let result = token.transfer(&mut *self, freelancer, amount);
             match result {
                 Ok(success) => require(success, "TokF"),
                 Err(_) => panic!("TokF"),
@@ -344,7 +342,8 @@ impl ArbiSecure {
         });
     }
 
-    /// Raises a dispute for a deal
+    /// Escalates the deal into a disputed state, freezing further milestone releases
+    /// until the designated arbiter intervenes and resolves the conflict.
     #[allow(deprecated)]
     pub fn raise_dispute(&mut self, deal_id: U256) {
         let caller = self.vm().msg_sender();
@@ -380,7 +379,8 @@ impl ArbiSecure {
         });
     }
 
-    /// Resolves a dispute (arbiter only)
+    /// Resolves an active dispute by distributing the remaining funds between the client
+    /// and freelancer according to the arbiter's ruling, after deducting the arbiter's fee.
     #[allow(deprecated)]
     pub fn resolve_dispute(&mut self, deal_id: U256, client_share: U256, freelancer_share: U256) {
         let caller = self.vm().msg_sender();
@@ -453,16 +453,13 @@ impl ArbiSecure {
         } else {
             let token = IERC20::new(token_addr);
             if net_client > U256::ZERO {
-                let config = Call::new_in(self);
-                let _ = token.transfer(config, client, net_client);
+                let _ = token.transfer(&mut *self, client, net_client);
             }
             if net_freelancer > U256::ZERO {
-                let config = Call::new_in(self);
-                let _ = token.transfer(config, freelancer, net_freelancer);
+                let _ = token.transfer(&mut *self, freelancer, net_freelancer);
             }
             if fee > U256::ZERO {
-                let config = Call::new_in(self);
-                let _ = token.transfer(config, arbiter_addr, fee);
+                let _ = token.transfer(&mut *self, arbiter_addr, fee);
             }
         }
 
@@ -473,7 +470,7 @@ impl ArbiSecure {
             arbiter_fee: fee,
         });
     }
-    /// Get milestone details
+    /// Retrieves detailed status information regarding a specific milestone within a deal.
     pub fn get_milestone(
         &self,
         deal_id: U256,
@@ -498,27 +495,27 @@ impl ArbiSecure {
         ))
     }
 
-    /// Get the client address for a deal
+    /// Retrieves the client (buyer) address associated with the specified deal.
     pub fn get_deal_client(&self, deal_id: U256) -> Address {
         self.deals.get(deal_id).client.get()
     }
 
-    /// Get the freelancer address for a deal
+    /// Retrieves the freelancer (seller) address associated with the specified deal.
     pub fn get_deal_freelancer(&self, deal_id: U256) -> Address {
         self.deals.get(deal_id).freelancer.get()
     }
 
-    /// Get the status of a deal
+    /// Retrieves the current execution status of the specified deal.
     pub fn get_deal_status(&self, deal_id: U256) -> U256 {
         U256::from(self.deals.get(deal_id).status.get().to::<u8>())
     }
 
-    /// Get the remaining amount for a deal
+    /// Retrieves the remaining unreleased funds allocated to the specified deal.
     pub fn get_deal_amount(&self, deal_id: U256) -> U256 {
         self.deals.get(deal_id).remaining_amount.get()
     }
 
-    /// Get the arbiter of a deal
+    /// Retrieves the designated arbiter address assigned to oversee the specified deal.
     pub fn get_deal_arbiter(&self, deal_id: U256) -> Address {
         self.deals.get(deal_id).arbiter.get()
     }
