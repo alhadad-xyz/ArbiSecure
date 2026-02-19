@@ -8,7 +8,7 @@ export default function MissionSection() {
                 <div className="lg:w-7/12">
                     <h2 className="text-4xl md:text-5xl lg:text-6xl leading-tight text-white">
                         <span className="font-header block mb-2">At ArbiSecure —</span>
-                        <SplitText className="font-serif italic text-gray-400 inline">
+                        <SplitText className="font-serif italic text-gray-400 inline" delay={0.3}>
                             we believe that trustless payments represent a fundamental shift in how value is exchanged — removing intermediaries, eliminating friction, and restoring financial autonomy to individuals and businesses worldwide.
                         </SplitText>
                     </h2>

@@ -6,13 +6,13 @@ export default function HeroSection() {
         <section className="flex-grow flex flex-col items-center justify-center px-4 md:px-0 max-w-7xl mx-auto w-full">
             <div className="text-center mb-16 space-y-2 md:space-y-4">
                 <div className="text-5xl md:text-8xl leading-none tracking-tight font-header hidden md:block">
-                    <MaskText delay={0}>
+                    <MaskText delay={0.2}>
                         <span className="font-header">ARBISECURE</span> <span className="font-serif italic font-light text-gray-400">IS THE</span>
                     </MaskText>
-                    <MaskText delay={0.1}>
+                    <MaskText delay={0.3}>
                         <span className="font-serif">TRUSTLESS</span> <span className="font-header">ESCROW</span>
                     </MaskText>
-                    <MaskText delay={0.2}>
+                    <MaskText delay={0.4}>
                         <span className="font-header">FOR</span> <span className="font-serif font-light text-gray-300">THE</span> <span className="font-header">GLOBAL</span> <span className="font-serif">ECONOMY</span>
                     </MaskText>
                 </div>

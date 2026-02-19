@@ -358,7 +358,7 @@ export default function DealPage() {
             createDeal({
                 address: CONTRACT_ADDRESS,
                 abi: ARBISECURE_ABI,
-                functionName: "createDeal",
+                functionName: "create_deal",
                 args: [
                     BigInt(0), // _ref_id
                     deal.freelancer as `0x${string}`,

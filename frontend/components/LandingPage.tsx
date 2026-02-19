@@ -16,13 +16,13 @@ export default function LandingPage() {
             <LandingHeader />
             <Ticker />
             <main className="flex-grow flex flex-col items-center justify-center w-full">
-                <FadeIn className="w-full"><HeroSection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><HeroSection /></FadeIn>
                 <FadeIn className="w-full" delay={0.2}><MissionSection /></FadeIn>
-                <FadeIn className="w-full"><ShowcaseSection /></FadeIn>
-                <FadeIn className="w-full"><ServicesSection /></FadeIn>
-                <FadeIn className="w-full"><ProjectListSection /></FadeIn>
-                <FadeIn className="w-full"><SecuritySection /></FadeIn>
-                <FadeIn className="w-full"><FeesSection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><ShowcaseSection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><ServicesSection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><ProjectListSection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><SecuritySection /></FadeIn>
+                <FadeIn className="w-full" delay={0.2}><FeesSection /></FadeIn>
             </main>
             <LandingFooter />
         </div>
