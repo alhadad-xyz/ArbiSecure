@@ -4,7 +4,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import { ARBISECURE_ABI } from "../lib/abi";
 
 // Use the newly deployed contract address
-const CONTRACT_ADDRESS = "0x85e00908bbf09ae656aa553b027a490eb42a54cc" as `0x${string}`;
+const CONTRACT_ADDRESS = "0xeb58dbe176614c0ee4a5ab9f070160b0a5e50520" as `0x${string}`;
 
 // Wallet private keys
 const CLIENT_KEY = "0x9e3aacc6ec546a80e38c54cdd1d13fb9c5ac8de97af1db7879a6f78b1da267b0";
@@ -57,7 +57,7 @@ async function main() {
     const dealAmount = parseEther("0.0001"); // 0.0001 ETH
     const milestoneAmounts = [dealAmount]; // Single milestone
     const milestoneEndTimes = [BigInt(0)]; // No time lock
-    const milestoneApprovals = [true]; // Requires approval
+    const milestoneApprovals = [1n]; // Requires approval (1 = true)
 
     try {
         // Get gas parameters
@@ -69,7 +69,7 @@ async function main() {
         const createHash = await clientWallet.writeContract({
             address: CONTRACT_ADDRESS as `0x${string}`,
             abi: ARBISECURE_ABI,
-            functionName: "create_deal",
+            functionName: "createDeal",
             args: [
                 BigInt(0), // ref_id
                 freelancerAccount.address,

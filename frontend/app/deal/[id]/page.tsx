@@ -316,14 +316,14 @@ export default function DealPage() {
                 return BigInt(0);
             });
 
-            // Approvals: false for time-based auto-release, true for manual/no-condition
+            // Approvals: 0 for time-based auto-release, 1 for manual/no-condition (Validation logic handles 0/1)
             const milestoneApprovals = milestones.map((m) => {
                 const conditions = m.conditions || [];
-                if (conditions.length === 0) return true; // no condition = manual approval
+                if (conditions.length === 0) return BigInt(1); // no condition = manual approval
                 const hasTimeCondition = conditions.some(c => c.type === 'time');
                 const hasManualCondition = conditions.some(c => c.type === 'manual');
-                if (hasTimeCondition && !hasManualCondition) return false; // pure time = auto-release
-                return true; // manual or hybrid = requires approval
+                if (hasTimeCondition && !hasManualCondition) return BigInt(0); // pure time = auto-release
+                return BigInt(1); // manual or hybrid = requires approval
             });
 
             const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -358,7 +358,7 @@ export default function DealPage() {
             createDeal({
                 address: CONTRACT_ADDRESS,
                 abi: ARBISECURE_ABI,
-                functionName: "create_deal",
+                functionName: "createDeal",
                 args: [
                     BigInt(0), // _ref_id
                     deal.freelancer as `0x${string}`,

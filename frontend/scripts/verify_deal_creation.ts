@@ -106,7 +106,7 @@ async function main() {
 
     const milestoneTitles = milestones.map((m: any) => m.title);
     const milestoneEndTimes = milestones.map(() => BigInt(0));
-    const milestoneApprovals = milestones.map(() => true);
+    const milestoneApprovals = milestones.map(() => 1n);
     const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
     const args = [
@@ -163,7 +163,7 @@ async function main() {
         const { result } = await publicClient.simulateContract({
             address: CONTRACT_ADDRESS,
             abi: ARBISECURE_ABI,
-            functionName: 'create_deal',
+            functionName: 'createDeal',
             args: args as any,
             account: deal.client as `0x${string}`, // Simulate as client
             value: parsedAmount
@@ -182,7 +182,7 @@ async function main() {
         const { result } = await publicClient.simulateContract({
             address: CONTRACT_ADDRESS,
             abi: ARBISECURE_ABI,
-            functionName: 'create_deal',
+            functionName: 'createDeal',
             args: [
                 0n,
                 deal.freelancer as `0x${string}`,
@@ -191,7 +191,7 @@ async function main() {
                 100n,
                 [100n],
                 [0n],
-                [true]
+                [1n]
             ],
             account: deal.client as `0x${string}`,
             value: 100n

@@ -30,7 +30,7 @@ async function main() {
         transport: http(rpcUrl)
     });
 
-    const contractAddress = "0x4c27770495f9d11c98b53020acbcabf2c44e714a"; // CONTRACT_ADDRESS;
+    const contractAddress = "0xeb58dbe176614c0ee4a5ab9f070160b0a5e50520"; // CONTRACT_ADDRESS;
     const arbiterAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"; // Mock arbiter
     const freelancerAddress = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Mock freelancer
 
@@ -47,13 +47,13 @@ async function main() {
     const totalAmount = parseEther("0.02"); // Small amount
     const milestoneAmounts = [parseEther("0.01"), parseEther("0.01")];
     const milestoneEndTimes = [BigInt(0), BigInt(0)];
-    const milestoneApprovals = [false, true]; // [Auto, Manual]
+    const milestoneApprovals = [0n, 1n]; // [Auto, Manual] where 0=false, 1=true
 
     console.log("\n1️⃣ Creating Deal...");
     const hash = await wallet.writeContract({
-        address: contractAddress,
+        address: contractAddress as `0x${string}`,
         abi: ARBISECURE_ABI,
-        functionName: "create_deal",
+        functionName: "createDeal",
         args: [
             BigInt(Date.now()), // ref_id
             freelancerAddress,
@@ -94,9 +94,9 @@ async function main() {
     console.log("\n2️⃣ Releasing Auto-Release Milestone (Index 0)...");
     try {
         const r1Hash = await wallet.writeContract({
-            address: contractAddress,
+            address: contractAddress as `0x${string}`,
             abi: ARBISECURE_ABI,
-            functionName: "release_milestone",
+            functionName: "releaseMilestone",
             args: [dealId, BigInt(0)]
         });
         console.log(`Tx sent: ${r1Hash}`);
@@ -114,9 +114,9 @@ async function main() {
     console.log("\n3️⃣ Releasing Manual Approval Milestone (Index 1)...");
     try {
         const r2Hash = await wallet.writeContract({
-            address: contractAddress,
+            address: contractAddress as `0x${string}`,
             abi: ARBISECURE_ABI,
-            functionName: "release_milestone",
+            functionName: "releaseMilestone",
             args: [dealId, BigInt(1)]
         });
         console.log(`Tx sent: ${r2Hash}`);
