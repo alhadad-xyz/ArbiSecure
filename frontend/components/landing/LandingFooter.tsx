@@ -1,3 +1,4 @@
+import { Twitter, MessageCircle, Send, Linkedin } from "lucide-react";
 
 export default function LandingFooter() {
     return (
@@ -17,21 +18,21 @@ export default function LandingFooter() {
                     </p>
                 </div>
                 <div className="space-y-6">
-                    <h4 className="text-white text-sm font-mono uppercase tracking-widest font-bold">Links</h4>
+                    <h4 className="text-white text-sm font-mono uppercase tracking-widest font-bold">Platform</h4>
                     <ul className="space-y-4 text-sm text-gray-400 font-mono">
                         <li><a className="hover:text-white transition-colors" href="#">Home</a></li>
                         <li><a className="hover:text-white transition-colors" href="#how-it-works">How It Works</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#about">About</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#fees">Pricing</a></li>
+                        <li><a className="hover:text-white transition-colors" href="#about">About Protocol</a></li>
+                        <li><a className="hover:text-white transition-colors" href="#fees">Fees & Pricing</a></li>
                     </ul>
                 </div>
                 <div className="space-y-6">
-                    <h4 className="text-white text-sm font-mono uppercase tracking-widest font-bold">Social</h4>
+                    <h4 className="text-white text-sm font-mono uppercase tracking-widest font-bold">Community</h4>
                     <ul className="space-y-4 text-sm text-gray-400 font-mono">
-                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><span className="material-symbols-outlined text-base">alternate_email</span> Twitter</a></li>
-                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><span className="material-symbols-outlined text-base">chat</span> Discord</a></li>
-                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><span className="material-symbols-outlined text-base">forum</span> Telegram</a></li>
-                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><span className="material-symbols-outlined text-base">share</span> LinkedIn</a></li>
+                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><Twitter className="w-4 h-4" /> X / Twitter</a></li>
+                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><MessageCircle className="w-4 h-4" /> Discord Server</a></li>
+                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><Send className="w-4 h-4" /> Telegram Group</a></li>
+                        <li><a className="hover:text-white transition-colors flex items-center gap-2" href="#"><Linkedin className="w-4 h-4" /> LinkedIn</a></li>
                     </ul>
                 </div>
                 <div className="space-y-6">
