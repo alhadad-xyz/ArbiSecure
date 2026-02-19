@@ -8,7 +8,6 @@ use alloc::vec::Vec;
 use alloy_sol_types::sol;
 use stylus_sdk::{
     alloy_primitives::{Address, U256, U8},
-    evm,
     prelude::*,
 };
 
@@ -242,20 +241,22 @@ impl ArbiSecure {
                 .set(milestone_approvals[i] != U256::ZERO);
         }
 
-        evm::log(DealCreated {
-            deal_id,
-            client: caller,
-            freelancer,
-            amount,
-            token,
-        });
+        log(
+            self.vm(),
+            DealCreated {
+                deal_id,
+                client: caller,
+                freelancer,
+                amount,
+                token,
+            },
+        );
 
         deal_id
     }
 
     /// Releases the specified milestone's funds to the freelancer if all required
     /// conditions, such as time locks and manual client approvals, are satisfied.
-    #[allow(deprecated)]
     pub fn release_milestone(&mut self, deal_id: U256, milestone_index: U256) {
         let caller = self.vm().msg_sender();
         let timestamp = self.vm().block_timestamp();
@@ -334,17 +335,19 @@ impl ArbiSecure {
             }
         }
 
-        evm::log(MilestoneReleased {
-            deal_id,
-            milestone_index,
-            freelancer,
-            amount,
-        });
+        log(
+            self.vm(),
+            MilestoneReleased {
+                deal_id,
+                milestone_index,
+                freelancer,
+                amount,
+            },
+        );
     }
 
     /// Escalates the deal into a disputed state, freezing further milestone releases
     /// until the designated arbiter intervenes and resolves the conflict.
-    #[allow(deprecated)]
     pub fn raise_dispute(&mut self, deal_id: U256) {
         let caller = self.vm().msg_sender();
         let mut deal = self.deals.setter(deal_id);
@@ -373,15 +376,17 @@ impl ArbiSecure {
         deal.ruling.set(U8::from(0));
 
         // Emit event with details
-        evm::log(DisputeRaised {
-            deal_id,
-            initiator: caller,
-        });
+        log(
+            self.vm(),
+            DisputeRaised {
+                deal_id,
+                initiator: caller,
+            },
+        );
     }
 
     /// Resolves an active dispute by distributing the remaining funds between the client
     /// and freelancer according to the arbiter's ruling, after deducting the arbiter's fee.
-    #[allow(deprecated)]
     pub fn resolve_dispute(&mut self, deal_id: U256, client_share: U256, freelancer_share: U256) {
         let caller = self.vm().msg_sender();
 
@@ -463,12 +468,15 @@ impl ArbiSecure {
             }
         }
 
-        evm::log(DisputeResolved {
-            deal_id,
-            client_amount: net_client,
-            freelancer_amount: net_freelancer,
-            arbiter_fee: fee,
-        });
+        log(
+            self.vm(),
+            DisputeResolved {
+                deal_id,
+                client_amount: net_client,
+                freelancer_amount: net_freelancer,
+                arbiter_fee: fee,
+            },
+        );
     }
     /// Retrieves detailed status information regarding a specific milestone within a deal.
     pub fn get_milestone(

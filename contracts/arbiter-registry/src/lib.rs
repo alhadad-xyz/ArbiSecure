@@ -5,7 +5,7 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use alloy_sol_types::sol;
+use alloy_sol_types::{sol, SolError};
 use stylus_sdk::{
     alloy_primitives::{Address, U256},
     evm,
@@ -86,12 +86,30 @@ sol_interface! {
 }
 
 // ============================================================================
+// Errors
+// ============================================================================
+
+sol! {
+    /// Error thrown when provided stake is less than required
+    #[derive(Debug)]
+    error LowStake(uint256 provided, uint256 required);
+
+    /// Error thrown when caller is not the admin
+    #[derive(Debug)]
+    error NotAdmin(address caller);
+
+    /// Error thrown when token transfer fails
+    #[derive(Debug)]
+    error TokenTransferFailed();
+}
+
+// ============================================================================
 // Implementation
 // ============================================================================
 
 #[public]
 impl ArbiterRegistry {
-    /// Initialize the registry
+    /// Initializes the arbiter registry with the specified staking token and minimum stake requirements.
     pub fn initialize(&mut self, staking_token: Address, min_stake: U256) {
         if self.admin.get() != Address::ZERO {
             return;
@@ -102,14 +120,18 @@ impl ArbiterRegistry {
         self.min_stake.set(min_stake);
     }
 
-    /// Register as an arbiter
-    pub fn register_as_arbiter(&mut self, amount: U256) {
+    /// Allows a user to register as an arbiter by staking the required amount of the designated utility token.
+    pub fn register_as_arbiter(&mut self, amount: U256) -> Result<(), Vec<u8>> {
         let caller = self.vm().msg_sender();
         let min_stake_val = self.min_stake.get();
         let token_addr = self.staking_token.get();
 
         if amount < min_stake_val {
-            panic!("Low Stake");
+            return Err(LowStake {
+                provided: amount,
+                required: min_stake_val,
+            }
+            .abi_encode());
         }
 
         // Transfer tokens
@@ -119,7 +141,7 @@ impl ArbiterRegistry {
         let result = token.transfer_from(config, caller, contract_address, amount);
 
         if result.is_err() || !result.unwrap() {
-            panic!("Tkn Fail");
+            return Err(TokenTransferFailed {}.abi_encode());
         }
 
         // Update state
@@ -138,20 +160,32 @@ impl ArbiterRegistry {
             arbiter: caller,
             amount,
         });
+
+        Ok(())
     }
 
-    /// Slash an arbiter (Admin only)
-    pub fn slash_arbiter(&mut self, arbiter: Address, amount: U256, reason: u8) {
+    /// Penalizes a registered arbiter by slashing their staked tokens and reducing their reputation score
+    /// Administrators only.
+    pub fn slash_arbiter(
+        &mut self,
+        arbiter: Address,
+        amount: U256,
+        reason: u8,
+    ) -> Result<(), Vec<u8>> {
         let caller = self.vm().msg_sender();
         if caller != self.admin.get() {
-            panic!("Not Admin");
+            return Err(NotAdmin { caller }.abi_encode());
         }
 
         let mut profile = self.arbiters.setter(arbiter);
         let current_stake = profile.stake.get();
 
         if current_stake < amount {
-            panic!("Low Stake");
+            return Err(LowStake {
+                provided: current_stake,
+                required: amount,
+            }
+            .abi_encode());
         }
 
         profile.stake.set(current_stake - amount);
@@ -170,9 +204,11 @@ impl ArbiterRegistry {
             profile.reputation.set(U256::ZERO);
             profile.is_active.set(false);
         }
+
+        Ok(())
     }
 
-    /// Get arbiter status
+    /// Retrieves the active status, total staked amount, and reputation score of the specified arbiter.
     pub fn get_arbiter_status(&self, arbiter: Address) -> (bool, U256, U256) {
         let profile = self.arbiters.get(arbiter);
         (

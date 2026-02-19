@@ -159,7 +159,7 @@
 > - M2: shows `Time-Locked` with a countdown timer
 
 ### Narration
-> *"Milestone 1 requires manual approval — the client clicks release after reviewing the initial audit. Milestone 2 is time-locked. When the 14-day window passes, the release triggers automatically. No client action, no dispute possible. This is the core innovation: pre-approved, self-enforcing payments."*
+> *"Milestone 1 requires manual approval — the client clicks release after reviewing the initial audit. Milestone 2 is time-locked. When the 7-day window passes, the release triggers automatically. No client action, no dispute possible. This is the core innovation: pre-approved, self-enforcing payments."*
 
 ---
 
