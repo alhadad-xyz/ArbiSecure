@@ -16,8 +16,8 @@ abigen!(
     r#"[
          function initialize() external
          function transferAdmin(address new_admin) external
-         struct Milestone { string title; uint256 amount; uint256 end_timestamp; bool requires_approval; }
-         function create_deal(uint256 _ref_id, address freelancer, address arbiter, address token, uint256 amount, string[] milestone_titles, uint256[] milestone_amounts, uint256[] milestone_end_times, bool[] milestone_approvals) external payable
+         struct Milestone { uint256 amount; uint64 end_timestamp; bool is_released; bool requires_approval; }
+         function create_deal(uint256 _ref_id, address freelancer, address arbiter, address token, uint256 amount, uint256[] milestone_amounts, uint64[] milestone_end_times, bool[] milestone_approvals) external payable
          function releaseMilestone(uint256 deal_id, uint256 milestone_index) external
          function raiseDispute(uint256 deal_id) external
          function resolveDispute(uint256 deal_id, uint256 client_share, uint256 freelancer_share) external
@@ -72,9 +72,9 @@ async fn test_integration_local() -> Result<(), Box<dyn std::error::Error>> {
     let arbiter = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8".parse::<Address>()?;
     let token = Address::zero();
     let amount = U256::from(100);
-    let titles = vec!["M1".to_string()];
+    // let titles = vec!["M1".to_string()]; // Removed
     let amounts = vec![amount];
-    let end_times = vec![U256::zero()];
+    let end_times = vec![0u64];
     let approvals = vec![true];
 
     println!("Calling createDeal (Payable)...");
@@ -85,7 +85,6 @@ async fn test_integration_local() -> Result<(), Box<dyn std::error::Error>> {
             arbiter,
             token,
             amount,
-            titles.clone(),
             amounts.clone(),
             end_times.clone(),
             approvals.clone(),
@@ -120,10 +119,9 @@ async fn test_integration_local() -> Result<(), Box<dyn std::error::Error>> {
             arbiter,
             token,
             amount_b,
-            titles,
             amounts_b,
-            end_times,
-            approvals,
+            end_times.clone(),
+            approvals.clone(),
         )
         .value(amount_b);
 
@@ -164,9 +162,8 @@ async fn test_integration_local() -> Result<(), Box<dyn std::error::Error>> {
             our_address, // We are arbiter
             token,
             amount_b,
-            vec!["M1".to_string()],
             vec![amount_b],
-            vec![U256::zero()],
+            vec![0u64],
             vec![true],
         )
         .value(amount_b);

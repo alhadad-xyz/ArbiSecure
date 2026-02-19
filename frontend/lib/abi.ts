@@ -8,7 +8,7 @@ export const ARBISECURE_ABI = [
     },
     {
         "type": "function",
-        "name": "create_deal",
+        "name": "createDeal",
         "inputs": [
             { "name": "_ref_id", "type": "uint256" },
             { "name": "freelancer", "type": "address" },
@@ -17,7 +17,7 @@ export const ARBISECURE_ABI = [
             { "name": "amount", "type": "uint256" },
             { "name": "milestone_amounts", "type": "uint256[]" },
             { "name": "milestone_end_times", "type": "uint256[]" },
-            { "name": "milestone_approvals", "type": "bool[]" }
+            { "name": "milestone_approvals", "type": "uint256[]" }
         ],
         "outputs": [{ "name": "deal_id", "type": "uint256" }],
         "stateMutability": "payable"
@@ -145,7 +145,7 @@ export const ARBISECURE_ABI = [
         "outputs": [
             { "name": "amount", "type": "uint256" },
             { "name": "is_released", "type": "bool" },
-            { "name": "end_timestamp", "type": "uint256" },
+            { "name": "end_timestamp", "type": "uint64" },
             { "name": "requires_approval", "type": "bool" }
         ],
         "stateMutability": "view"

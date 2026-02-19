@@ -8,7 +8,7 @@ use alloc::string::String;
 use alloc::vec::Vec;
 use alloy_sol_types::sol;
 use stylus_sdk::{
-    alloy_primitives::{Address, U256, U8},
+    alloy_primitives::{Address, U256, U64, U8},
     evm,
     prelude::*,
 };
@@ -174,7 +174,7 @@ impl ArbiSecure {
         amount: U256,
         milestone_amounts: Vec<U256>,
         milestone_end_times: Vec<U256>,
-        milestone_approvals: Vec<bool>,
+        milestone_approvals: Vec<U256>, // Changed to U256 for ABI safety
     ) -> U256 {
         let caller = self.vm().msg_sender();
         self.gasless_deals_used.setter(caller).set(true);
@@ -212,7 +212,7 @@ impl ArbiSecure {
             }
         }
 
-        // Cache timestamp before mutable borrow
+        // Cache timestamp
         let timestamp = self.vm().block_timestamp();
 
         // Create Deal
@@ -238,7 +238,9 @@ impl ArbiSecure {
             m_guard.amount.set(milestone_amounts[i]);
             m_guard.is_released.set(false);
             m_guard.end_timestamp.set(milestone_end_times[i]);
-            m_guard.requires_approval.set(milestone_approvals[i]);
+            m_guard
+                .requires_approval
+                .set(milestone_approvals[i] != U256::ZERO);
         }
 
         evm::log(DealCreated {
