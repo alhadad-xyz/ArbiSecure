@@ -163,7 +163,7 @@ async function main() {
         const { result } = await publicClient.simulateContract({
             address: CONTRACT_ADDRESS,
             abi: ARBISECURE_ABI,
-            functionName: 'createDeal',
+            functionName: 'create_deal',
             args: args as any,
             account: deal.client as `0x${string}`, // Simulate as client
             value: parsedAmount
@@ -182,7 +182,7 @@ async function main() {
         const { result } = await publicClient.simulateContract({
             address: CONTRACT_ADDRESS,
             abi: ARBISECURE_ABI,
-            functionName: 'createDeal',
+            functionName: 'create_deal',
             args: [
                 0n,
                 deal.freelancer as `0x${string}`,

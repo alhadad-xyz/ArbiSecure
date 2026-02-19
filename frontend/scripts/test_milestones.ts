@@ -53,7 +53,7 @@ async function main() {
     const hash = await wallet.writeContract({
         address: contractAddress,
         abi: ARBISECURE_ABI,
-        functionName: "createDeal",
+        functionName: "create_deal",
         args: [
             BigInt(Date.now()), // ref_id
             freelancerAddress,

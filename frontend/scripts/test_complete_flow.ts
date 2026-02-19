@@ -69,7 +69,7 @@ async function main() {
         const createHash = await clientWallet.writeContract({
             address: CONTRACT_ADDRESS as `0x${string}`,
             abi: ARBISECURE_ABI,
-            functionName: "createDeal",
+            functionName: "create_deal",
             args: [
                 BigInt(0), // ref_id
                 freelancerAccount.address,

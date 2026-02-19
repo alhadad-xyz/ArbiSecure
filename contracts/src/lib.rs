@@ -165,7 +165,7 @@ impl ArbiSecure {
     }
 
     #[payable]
-    pub fn createDeal(
+    pub fn create_deal(
         &mut self,
         _ref_id: U256,
         freelancer: Address,

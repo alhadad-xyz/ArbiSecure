@@ -8,7 +8,7 @@ export const ARBISECURE_ABI = [
     },
     {
         "type": "function",
-        "name": "createDeal",
+        "name": "create_deal",
         "inputs": [
             { "name": "_ref_id", "type": "uint256" },
             { "name": "freelancer", "type": "address" },

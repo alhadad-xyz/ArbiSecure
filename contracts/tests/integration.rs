@@ -17,7 +17,7 @@ abigen!(
          function initialize() external
          function transferAdmin(address new_admin) external
          struct Milestone { string title; uint256 amount; uint256 end_timestamp; bool requires_approval; }
-         function createDeal(uint256 _ref_id, address freelancer, address arbiter, address token, uint256 amount, string[] milestone_titles, uint256[] milestone_amounts, uint256[] milestone_end_times, bool[] milestone_approvals) external payable
+         function create_deal(uint256 _ref_id, address freelancer, address arbiter, address token, uint256 amount, string[] milestone_titles, uint256[] milestone_amounts, uint256[] milestone_end_times, bool[] milestone_approvals) external payable
          function releaseMilestone(uint256 deal_id, uint256 milestone_index) external
          function raiseDispute(uint256 deal_id) external
          function resolveDispute(uint256 deal_id, uint256 client_share, uint256 freelancer_share) external
