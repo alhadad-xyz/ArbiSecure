@@ -11,7 +11,7 @@ export default function ShowcaseSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2 group relative rounded-card overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-glass border border-glass-border">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 z-10"></div>
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
 
                     <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-20">
                         <h2 className="text-3xl md:text-5xl font-header mb-6">
@@ -23,7 +23,7 @@ export default function ShowcaseSection() {
                 </div>
 
                 <div className="group relative rounded-card overflow-hidden aspect-square bg-glass border border-glass-border">
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                     <div className="absolute bottom-8 left-8 z-20">
                         <span className="font-nav bg-white/10 text-white px-2 py-1 rounded-full border border-white/10 mb-3 inline-block">Performance</span>
@@ -33,7 +33,7 @@ export default function ShowcaseSection() {
                 </div>
 
                 <div className="group relative rounded-card overflow-hidden aspect-square bg-glass border border-glass-border">
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639322537228-ad71c4295843?q=80&w=2832&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2832&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                     <div className="absolute bottom-8 left-8 z-20">
                         <span className="font-nav bg-white/10 text-white px-2 py-1 rounded-full border border-white/10 mb-3 inline-block">Security</span>
