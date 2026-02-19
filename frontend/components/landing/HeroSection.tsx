@@ -35,18 +35,17 @@ export default function HeroSection() {
                             <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
                         </div>
                     </div>
-                    <span>Start Escrow</span>
+                    <span>Create Agreement</span>
                 </TransitionLink>
-                <button
+                <TransitionLink href="/dashboard/deals"
                     className="flex items-center justify-between bg-white text-black rounded-full pl-6 pr-2 py-2 hover:bg-gray-200 transition-all font-nav font-bold w-48 h-14">
-                    <span>Deposit Now</span>
+                    <span>View Dashboard</span>
                     <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center ml-3">
-                        {/* Simple arrow icon to replace Material Icons for now */}
                         <svg className="w-5 h-5 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </div>
-                </button>
+                </TransitionLink>
             </div>
         </section>
     );

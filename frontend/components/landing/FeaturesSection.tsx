@@ -2,7 +2,7 @@
 const features = [
     {
         title: "Stylus Efficiency",
-        description: "Powered by Arbitrum Stylus, our smart contracts are written in Rust for maximum performance and minimal gas costs. Save up to 80% compared to standard EVM escrows.",
+        description: "Built on Arbitrum Stylus with Rust-based smart contracts, ArbiSecure delivers up to 80% lower gas costs compared to standard EVM escrow solutions — without compromising security.",
         icon: (
             <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -11,7 +11,7 @@ const features = [
     },
     {
         title: "Instant Settlement",
-        description: "No more waiting for Net-30 terms. Funds are locked in the smart contract and released instantly to your wallet upon job completion.",
+        description: "Eliminate Net-30 payment cycles. Funds are locked in the smart contract and released directly to the service provider's wallet upon milestone completion — no intermediaries, no delays.",
         icon: (
             <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -20,7 +20,7 @@ const features = [
     },
     {
         title: "Global Reach",
-        description: "Work with anyone, anywhere. ArbiSecure separates the payment layer from banking restrictions, enabling true borderless collaboration.",
+        description: "Engage talent across borders without banking friction. ArbiSecure operates at the protocol layer, enabling compliant, borderless payments for distributed teams and international engagements.",
         icon: (
             <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -38,7 +38,7 @@ export default function FeaturesSection() {
                 <h2 className="text-3xl md:text-5xl font-header mb-6">
                     BUILT FOR THE <span className="text-white italic font-serif">MODERN</span> ECONOMY
                 </h2>
-                <p className="text-xl text-gray-500 font-serif italic">The trustless layer for modern work.</p>
+                <p className="text-xl text-gray-500 font-serif italic">The infrastructure layer for professional digital work.</p>
             </div>
             <FadeInStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {features.map((feature, index) => (

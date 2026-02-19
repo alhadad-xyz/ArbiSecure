@@ -60,7 +60,7 @@ export default function LandingHeader() {
                                 if (chain.unsupported) {
                                     return (
                                         <button onClick={openChainModal} type="button" className="bg-red-500 text-white px-6 py-3 rounded-xl font-bold text-xs tracking-wider hover:scale-105 transition-transform uppercase">
-                                            Wrong network
+                                            Unsupported Network
                                         </button>
                                     );
                                 }

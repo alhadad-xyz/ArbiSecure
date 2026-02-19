@@ -9,7 +9,7 @@ export default function MissionSection() {
                     <h2 className="text-4xl md:text-5xl lg:text-6xl leading-tight text-white">
                         <span className="font-header block mb-2">At ArbiSecure —</span>
                         <SplitText className="font-serif italic text-gray-400 inline">
-                            we believe that trustless payments are not just about code but also about creating seamless and empowering financial freedom.
+                            we believe that trustless payments represent a fundamental shift in how value is exchanged — removing intermediaries, eliminating friction, and restoring financial autonomy to individuals and businesses worldwide.
                         </SplitText>
                     </h2>
                 </div>
@@ -19,10 +19,10 @@ export default function MissionSection() {
                             <span className="font-nav text-gray-500 mb-2 block">Mission</span>
                         </div>
                         <p className="font-mono text-sm text-gray-400 leading-relaxed max-w-xs">
-                            We combine Arbitrum's efficiency with rust-based smart contracts to deliver a settlement layer that works at the speed of global business.
+                            We combine Arbitrum&apos;s computational efficiency with Rust-based smart contracts to deliver a settlement layer that operates at the speed and scale of global commerce.
                         </p>
                         <a className="inline-flex items-center font-nav hover:text-white transition-colors" href="#">
-                            Read Manifest <span className="ml-2">→</span>
+                            View Documentation <span className="ml-2">→</span>
                         </a>
                     </div>
                 </div>

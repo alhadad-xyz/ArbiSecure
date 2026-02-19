@@ -2,6 +2,40 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import type { CreateDealInput } from '@/lib/supabase';
 
+export async function GET(request: NextRequest) {
+    try {
+        const address = request.nextUrl.searchParams.get('address');
+
+        let query = supabase
+            .from('deals')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (address) {
+            // Filter deals where the address is a participant (client or freelancer)
+            query = query.or(`client.ilike.${address},freelancer.ilike.${address}`);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+            console.error('Database error:', error);
+            return NextResponse.json(
+                { error: `Database error: ${error.message}` },
+                { status: 500 }
+            );
+        }
+
+        return NextResponse.json(data || []);
+    } catch (error) {
+        console.error('Error fetching deals:', error);
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        );
+    }
+}
+
 export async function POST(request: NextRequest) {
     try {
         const body: CreateDealInput = await request.json();

@@ -13,7 +13,7 @@ export default function LandingFooter() {
                         <span className="text-xl font-header tracking-tight">ARBISECURE</span>
                     </div>
                     <p className="text-gray-400 text-sm leading-relaxed max-w-xs font-mono">
-                        The leading trustless freelance solution for the modern digital economy. Fast, secure, and intuitive.
+                        The professional-grade escrow protocol for the digital economy. Secure, transparent, and non-custodial.
                     </p>
                 </div>
                 <div className="space-y-6">

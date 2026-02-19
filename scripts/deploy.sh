@@ -49,7 +49,8 @@ fi
 cargo +nightly stylus deploy \
   --private-key=$PRIVATE_KEY \
   --endpoint=$ARBITRUM_SEPOLIA_RPC_URL \
-  --max-fee-per-gas-gwei=10.0
+  --max-fee-per-gas-gwei=10.0 \
+  --no-verify
 
 echo "✅ Deployment complete!"
 echo "📝 Update NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS in frontend/.env.local with the new address from output above."

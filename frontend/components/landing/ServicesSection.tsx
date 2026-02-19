@@ -6,7 +6,7 @@ export default function ServicesSection() {
         <section id="how-it-works" className="py-24 px-6 md:px-12 w-full max-w-7xl mx-auto">
             <div className="flex justify-between items-end mb-8 px-4">
                 <h3 className="font-nav text-gray-500">How It Works</h3>
-                <span className="font-nav text-gray-600">3 Simple Steps</span>
+                <span className="font-nav text-gray-600">Three Simple Steps</span>
             </div>
             <FadeInStagger className="space-y-4">
                 {/* Step 1: Initiation */}
@@ -27,7 +27,7 @@ export default function ServicesSection() {
                         </div>
                         <div className="md:w-1/3 text-right md:text-left">
                             <p className="font-mono text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
-                                Freelancer defines the terms (amount, deadline) and generates a secure, unique escrow link on Arbitrum.
+                                The service provider defines the engagement terms — scope, milestones, and payment amount — and generates a secure, verifiable escrow link on Arbitrum.
                             </p>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ export default function ServicesSection() {
                         </div>
                         <div className="md:w-1/3 text-right md:text-left">
                             <p className="font-mono text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
-                                Client connects their wallet and deposits USDC. Funds are held in a trustless Stylus smart contract.
+                                The client connects their wallet and deposits the agreed amount. Funds are held in a non-custodial Stylus smart contract until release conditions are met.
                             </p>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ export default function ServicesSection() {
                         </div>
                         <div className="md:w-1/3 text-right md:text-left">
                             <p className="font-mono text-sm text-gray-500 max-w-xs ml-auto md:ml-0">
-                                Work delivered? Client clicks release. Funds transfer directly to the freelancer's wallet instantly.
+                                Upon milestone completion, the client approves the release. Funds are transferred directly and instantly to the service provider’s wallet — no intermediaries required.
                             </p>
                         </div>
                     </div>
