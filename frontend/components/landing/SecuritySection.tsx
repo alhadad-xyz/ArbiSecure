@@ -14,8 +14,8 @@ export default function SecuritySection() {
                                 </svg>
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold mb-2">Smart Contract Security</h3>
-                                <p className="text-gray-400">Funds are held in a secure, audited Stylus smart contract. Neither ArbiSecure nor the freelancer can access funds until the release condition is met.</p>
+                                <h3 className="text-xl font-bold mb-2">Non-Custodial Architecture</h3>
+                                <p className="text-gray-400">Funds are held exclusively within the audited Stylus smart contract. ArbiSecure, the client, and the service provider cannot access funds unilaterally — only predefined release conditions trigger a transfer.</p>
                             </div>
                         </div>
                         <div className="flex gap-6">
@@ -25,8 +25,8 @@ export default function SecuritySection() {
                                 </svg>
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold mb-2">Fair Dispute Resolution</h3>
-                                <p className="text-gray-400">In case of a disagreement, our "Arbiter" mechanism ensures a fair outcome via a neutral third-party check (2-of-3 multi-sig logic), protecting both parties.</p>
+                                <h3 className="text-xl font-bold mb-2">Structured Dispute Resolution</h3>
+                                <p className="text-gray-400">In the event of a disagreement, ArbiSecure&apos;s neutral Arbiter mechanism provides impartial adjudication. A cryptographically enforced multi-party approval process ensures equitable outcomes for all parties.</p>
                             </div>
                         </div>
                     </div>

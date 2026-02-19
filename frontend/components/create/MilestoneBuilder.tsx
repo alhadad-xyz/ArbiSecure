@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Milestone, calculateMilestoneAmount, generateMilestoneId, MILESTONE_TEMPLATES } from "@/lib/types";
 import GlassInput from "./GlassInput";
+import { LayoutTemplate, X, CheckCircle2 } from "lucide-react";
 
 interface MilestoneBuilderProps {
     totalAmount: string;
@@ -44,6 +45,23 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
         }));
     };
 
+    // Keep amounts in sync with totalAmount and percentages
+    useEffect(() => {
+        let hasChanges = false;
+        const updated = milestones.map(m => {
+            const expected = calculateMilestoneAmount(totalAmount, m.percentage);
+            if (m.amount !== expected) {
+                hasChanges = true;
+                return { ...m, amount: expected };
+            }
+            return m;
+        });
+
+        if (hasChanges) {
+            onChange(updated);
+        }
+    }, [totalAmount, milestones, onChange]);
+
     const applyTemplate = (templateIndex: number) => {
         const template = MILESTONE_TEMPLATES[templateIndex];
         const newMilestones: Milestone[] = template.milestones.map((tm, index) => ({
@@ -66,9 +84,9 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
             <div className="flex justify-end">
                 <button
                     onClick={() => setShowTemplates(!showTemplates)}
-                    className="text-xs font-mono text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/40 rounded px-3 py-1"
+                    className="text-xs font-mono text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/40 rounded px-3 py-1 flex items-center gap-1.5"
                 >
-                    📋 Templates
+                    <LayoutTemplate className="w-3.5 h-3.5" /> Templates
                 </button>
             </div>
 
@@ -105,8 +123,9 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
             {/* Progress indicator */}
             <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs font-mono">
-                    <span className={isValid ? "text-green-400" : "text-yellow-400"}>
-                        {isValid ? "✓ Total: 100%" : `Total: ${totalPercentage}%`}
+                    <span className={`flex items-center gap-1 ${isValid ? "text-green-400" : "text-yellow-400"}`}>
+                        {isValid && <CheckCircle2 className="w-3.5 h-3.5" />}
+                        {isValid ? "Total: 100%" : `Total: ${totalPercentage}%`}
                     </span>
                     <span className="text-gray-400">
                         {milestones.length} milestone{milestones.length !== 1 ? 's' : ''}
@@ -149,9 +168,9 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
                                 {milestones.length > 1 && (
                                     <button
                                         onClick={() => removeMilestone(milestone.id)}
-                                        className="text-red-400 hover:text-red-300 text-xs font-mono"
+                                        className="text-red-400 hover:text-red-300"
                                     >
-                                        ✕
+                                        <X className="w-3.5 h-3.5" />
                                     </button>
                                 )}
                             </div>
@@ -165,9 +184,9 @@ export default function MilestoneBuilder({ totalAmount, milestones, onChange }: 
                                         type="number"
                                         min="0"
                                         max="100"
-                                        value={milestone.percentage}
+                                        value={milestone.percentage || ''}
                                         onChange={(e) => updateMilestone(milestone.id, { percentage: parseFloat(e.target.value) || 0 })}
-                                        className="w-full bg-transparent border-b border-white/20 text-white placeholder-white/20 focus:outline-none focus:border-white transition-all py-2 font-mono text-lg"
+                                        className="w-full bg-transparent border-b border-white/20 text-white placeholder-white/20 focus:outline-none focus:border-white transition-all py-2 font-mono text-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     />
                                 </div>
                                 <div className="flex-grow">

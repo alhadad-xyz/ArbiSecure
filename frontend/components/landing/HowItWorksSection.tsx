@@ -2,18 +2,18 @@
 const steps = [
     {
         id: "01",
-        title: "Create Link",
-        description: "Freelancer sets terms (amount, deliverable) and generates a secure escrow link.",
+        title: "Define Terms",
+        description: "The service provider configures the agreement — specifying scope, milestones, and payment amount — then generates a secure, unique escrow link.",
     },
     {
         id: "02",
-        title: "Deposit Funds",
-        description: "Client connects wallet and deposits USDC into the smart contract via the link.",
+        title: "Fund the Contract",
+        description: "The client connects their wallet and deposits the agreed amount into the Stylus smart contract, where it is held in trustless escrow.",
     },
     {
         id: "03",
-        title: "Release & Pay",
-        description: "Work is submitted. Client approves release. Funds transfer instantly.",
+        title: "Release & Settle",
+        description: "Upon milestone completion, the client approves the release. Funds are transferred directly and instantly to the service provider's wallet.",
     },
 ];
 
@@ -22,7 +22,7 @@ export default function HowItWorksSection() {
         <section id="how-it-works" className="py-24 px-4 max-w-7xl mx-auto w-full bg-glass rounded-section my-12">
             <div className="text-center mb-16 px-4">
                 <h2 className="text-4xl font-header mb-4">How It Works</h2>
-                <p className="text-xl text-gray-500 font-serif italic">Secure payments in 3 simple steps.</p>
+                <p className="text-xl text-gray-500 font-serif italic">Structured, transparent payments in three steps.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-8">
                 {steps.map((step, index) => (

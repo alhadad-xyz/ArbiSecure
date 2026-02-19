@@ -7,17 +7,19 @@ import MilestoneBuilder from "./MilestoneBuilder";
 import ConditionConfigurator from "./ConditionConfigurator";
 import { QRCodeSVG } from "qrcode.react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { toast } from "sonner";
 import { parseEther } from "viem";
 import { ARBISECURE_ABI, CONTRACT_ADDRESS, PLATFORM_ARBITER_ADDRESS } from "@/lib/abi";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 import { DealFormData, Milestone, generateMilestoneId, validateMilestones } from "@/lib/types";
+import { Info } from "lucide-react";
 
 export default function CreateDealWizard() {
     const router = useRouter();
-    // MOCK MODE: Bypass wallet connection for dev
-    const MOCK_MODE = true;
+    // MOCK_MODE: Bypass wallet connection for dev (Set to false for production)
+    const MOCK_MODE = false;
     const { address: realAddress } = useAccount();
     const address = MOCK_MODE ? "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" : realAddress;
 
@@ -230,39 +232,54 @@ export default function CreateDealWizard() {
                             custom={step}
                             className="space-y-8"
                         >
-                            <div className="space-y-2">
-                                <h2 className="text-3xl font-header text-white">Initiate Agreement</h2>
-                                <p className="text-gray-400 font-mono text-sm">Define the scope and deliverables.</p>
-                            </div>
+                            {/* Wallet Connection Check */}
+                            {!address ? (
+                                <div className="p-6 bg-red-500/10 border border-red-500/20 rounded-xl space-y-4 text-center">
+                                    <h3 className="text-red-400 font-header font-bold text-lg">Wallet Connection Required</h3>
+                                    <p className="text-gray-400 text-sm font-mono">
+                                        Please connect your wallet to create an escrow deal on the blockchain.
+                                    </p>
+                                    <div className="flex justify-center">
+                                        <ConnectButton />
+                                    </div>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="space-y-2">
+                                        <h2 className="text-3xl font-header text-white">Initiate Agreement</h2>
+                                        <p className="text-gray-400 font-mono text-sm">Define the scope and deliverables.</p>
+                                    </div>
 
-                            <GlassInput
-                                label="Agreement Title"
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                placeholder="e.g. Smart Contract Audit"
-                                isHuge
-                                autoFocus
-                            />
+                                    <GlassInput
+                                        label="Agreement Title"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                        placeholder="e.g. Smart Contract Audit"
+                                        isHuge
+                                        autoFocus
+                                    />
 
-                            <div className="relative group pt-4">
-                                <textarea
-                                    className="w-full bg-transparent border-b border-white/20 text-white placeholder-white/20 focus:outline-none focus:border-white transition-all duration-300 py-2 font-mono text-sm min-h-[100px] resize-none"
-                                    placeholder="Add a detailed description (optional)..."
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                />
-                            </div>
+                                    <div className="relative group pt-4">
+                                        <textarea
+                                            className="w-full bg-transparent border-b border-white/20 text-white placeholder-white/20 focus:outline-none focus:border-white transition-all duration-300 py-2 font-mono text-sm min-h-[100px] resize-none"
+                                            placeholder="Add a detailed description (optional)..."
+                                            value={formData.description}
+                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        />
+                                    </div>
 
-                            {/* Navigation */}
-                            <div className="flex justify-end pt-6">
-                                <button
-                                    onClick={handleNext}
-                                    disabled={!formData.title.trim()}
-                                    className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Next →
-                                </button>
-                            </div>
+                                    {/* Navigation */}
+                                    <div className="flex justify-end pt-6">
+                                        <button
+                                            onClick={handleNext}
+                                            disabled={!formData.title.trim()}
+                                            className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            Next →
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </motion.div>
                     )}
 
@@ -299,17 +316,17 @@ export default function CreateDealWizard() {
                             </div>
 
                             <GlassInput
-                                label="Freelancer Wallet Address"
+                                label="Service Provider Wallet Address"
                                 value={formData.freelancer}
                                 onChange={(e) => setFormData({ ...formData, freelancer: e.target.value })}
-                                placeholder="0x... (who gets paid)"
+                                placeholder="0x... (recipient of funds)"
                             />
 
                             <GlassInput
                                 label="Client Wallet Address"
                                 value={formData.client}
                                 onChange={(e) => setFormData({ ...formData, client: e.target.value })}
-                                placeholder="0x... (who will fund this deal)"
+                                placeholder="0x... (the party funding this agreement)"
                             />
 
                             <p className="text-xs text-gray-500 font-mono">
@@ -458,7 +475,7 @@ export default function CreateDealWizard() {
                         >
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-header text-white">Dispute Resolution</h2>
-                                <p className="text-gray-400 font-mono text-sm">Designate a neutral third party for security.</p>
+                                <p className="text-gray-400 font-mono text-sm">Designate a neutral third party to adjudicate any disputes.</p>
                             </div>
 
                             <GlassInput
@@ -479,7 +496,7 @@ export default function CreateDealWizard() {
                             </div>
 
                             <p className="text-xs text-gray-500 font-mono bg-white/5 p-4 rounded-lg border border-white/10">
-                                ℹ️ The arbiter holds the key to resolve disputes.
+                                <Info className="inline w-3.5 h-3.5 mr-1 align-text-bottom" /> The Arbiter has authority to resolve disputes and determine fund distribution.
                                 By selecting ArbiSecure, you agree to our dispute resolution terms.
                             </p>
 
@@ -513,7 +530,7 @@ export default function CreateDealWizard() {
                         >
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-header text-white">Review & Confirm</h2>
-                                <p className="text-gray-400 font-mono text-sm">Double-check the details before creating your escrow deal.</p>
+                                <p className="text-gray-400 font-mono text-sm">Please review all agreement details carefully before proceeding.</p>
                             </div>
 
                             <div className="space-y-4 bg-white/5 p-6 rounded-2xl border border-white/10">
@@ -536,7 +553,7 @@ export default function CreateDealWizard() {
                                     <span className="text-white font-mono text-xs">{formData.client}</span>
                                 </div>
                                 <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                                    <span className="text-gray-400 font-mono text-xs uppercase">Freelancer</span>
+                                    <span className="text-gray-400 font-mono text-xs uppercase">Service Provider</span>
                                     <span className="text-white font-mono text-xs">{formData.freelancer}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
@@ -558,7 +575,7 @@ export default function CreateDealWizard() {
                                     disabled={isGenerating}
                                     className="px-8 py-3 bg-white text-black font-mono text-sm rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {isGenerating ? 'Generating...' : '✨ Generate Deal Link'}
+                                    {isGenerating ? 'Processing...' : 'Generate Agreement Link'}
                                 </button>
                             </div>
                         </motion.div>
@@ -575,8 +592,8 @@ export default function CreateDealWizard() {
                             className="space-y-8"
                         >
                             <div className="space-y-2 text-center">
-                                <h2 className="text-3xl font-header text-white">Deal Created! 🎉</h2>
-                                <p className="text-gray-400 font-mono text-sm">Share this link with your client to fund the escrow.</p>
+                                <h2 className="text-3xl font-header text-white">Agreement Created</h2>
+                                <p className="text-gray-400 font-mono text-sm">Share this link with the client to fund the escrow contract.</p>
                             </div>
 
                             {/* QR Code */}

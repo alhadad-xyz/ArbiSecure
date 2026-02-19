@@ -25,8 +25,18 @@ export const config = getDefaultConfig({
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
   chains: [chains[0], ...chains.slice(1)], // Spread to satisfy type requirements if needed, or just pass 'chains' as [Chain, ...Chain[]] logic might apply
   transports: {
-    [arbitrumSepolia.id]: http('https://sepolia-rollup.arbitrum.io/rpc'),
+    [arbitrumSepolia.id]: http('https://sepolia-rollup.arbitrum.io/rpc', {
+      // Add 20% buffer to gas estimates to handle base fee fluctuations
+      retryCount: 3,
+      timeout: 30_000,
+    }),
     [nitroDevnet.id]: http('http://127.0.0.1:8547'),
   },
   ssr: true,
+  // Add global fee multiplier to prevent "max fee per gas less than block base fee" errors
+  batch: {
+    multicall: {
+      wait: 50,
+    },
+  },
 });

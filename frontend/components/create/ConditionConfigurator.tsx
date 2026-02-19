@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MilestoneCondition, ConditionType, OracleType, generateConditionId } from "@/lib/types";
 import GlassInput from "./GlassInput";
+import { Clock, Link, Hand, Zap, ClipboardList, Info, X, ChevronDown, ChevronRight } from "lucide-react";
 
 interface ConditionConfiguratorProps {
     milestoneIndex: number;
@@ -54,13 +55,13 @@ export default function ConditionConfigurator({
         }
     }
 
-    function getConditionIcon(type: ConditionType): string {
+    function getConditionIcon(type: ConditionType) {
         switch (type) {
-            case 'time': return '⏰';
-            case 'oracle': return '🔗';
-            case 'manual': return '✋';
-            case 'hybrid': return '⚡';
-            default: return '📋';
+            case 'time': return <Clock className="w-5 h-5" />;
+            case 'oracle': return <Link className="w-5 h-5" />;
+            case 'manual': return <Hand className="w-5 h-5" />;
+            case 'hybrid': return <Zap className="w-5 h-5" />;
+            default: return <ClipboardList className="w-5 h-5" />;
         }
     }
 
@@ -77,7 +78,7 @@ export default function ConditionConfigurator({
                     onClick={() => addCondition('time')}
                     className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl p-4 text-left transition-all group"
                 >
-                    <div className="text-2xl mb-2">⏰</div>
+                    <div className="mb-2 text-white/70 group-hover:text-white transition-colors"><Clock className="w-6 h-6" /></div>
                     <div className="text-white font-mono text-sm group-hover:text-white/90">Time-Based</div>
                     <div className="text-gray-400 text-xs mt-1">Auto-release after X days</div>
                 </button>
@@ -86,7 +87,7 @@ export default function ConditionConfigurator({
                     onClick={() => addCondition('oracle')}
                     className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl p-4 text-left transition-all group"
                 >
-                    <div className="text-2xl mb-2">🔗</div>
+                    <div className="mb-2 text-white/70 group-hover:text-white transition-colors"><Link className="w-6 h-6" /></div>
                     <div className="text-white font-mono text-sm group-hover:text-white/90">Oracle</div>
                     <div className="text-gray-400 text-xs mt-1">GitHub PR, API check</div>
                 </button>
@@ -95,7 +96,7 @@ export default function ConditionConfigurator({
                     onClick={() => addCondition('manual')}
                     className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl p-4 text-left transition-all group"
                 >
-                    <div className="text-2xl mb-2">✋</div>
+                    <div className="mb-2 text-white/70 group-hover:text-white transition-colors"><Hand className="w-6 h-6" /></div>
                     <div className="text-white font-mono text-sm group-hover:text-white/90">Manual</div>
                     <div className="text-gray-400 text-xs mt-1">Client approval required</div>
                 </button>
@@ -104,7 +105,7 @@ export default function ConditionConfigurator({
                     onClick={() => addCondition('hybrid')}
                     className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl p-4 text-left transition-all group"
                 >
-                    <div className="text-2xl mb-2">⚡</div>
+                    <div className="mb-2 text-white/70 group-hover:text-white transition-colors"><Zap className="w-6 h-6" /></div>
                     <div className="text-white font-mono text-sm group-hover:text-white/90">Hybrid</div>
                     <div className="text-gray-400 text-xs mt-1">Combine conditions</div>
                 </button>
@@ -128,7 +129,7 @@ export default function ConditionConfigurator({
                                     className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-all"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <span className="text-xl">{getConditionIcon(condition.type)}</span>
+                                        <span className="text-white/70">{getConditionIcon(condition.type)}</span>
                                         <div>
                                             <p className="text-white font-mono text-sm capitalize">{condition.type} Condition</p>
                                             <p className="text-gray-400 text-xs">{condition.description}</p>
@@ -142,10 +143,10 @@ export default function ConditionConfigurator({
                                             }}
                                             className="text-red-400 hover:text-red-300 text-xs font-mono px-2"
                                         >
-                                            ✕
+                                            <X className="w-3.5 h-3.5" />
                                         </button>
                                         <span className="text-white/40 text-xs">
-                                            {expandedConditionId === condition.id ? '▼' : '▶'}
+                                            {expandedConditionId === condition.id ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
                                         </span>
                                     </div>
                                 </div>
@@ -172,8 +173,8 @@ export default function ConditionConfigurator({
                                                             })}
                                                             placeholder="7"
                                                         />
-                                                        <p className="text-xs text-gray-500 font-mono">
-                                                            ℹ️ Funds will auto-release {condition.daysAfterPrevious || 0} days after {milestoneIndex === 0 ? 'deal creation' : 'previous milestone'}
+                                                        <p className="text-xs text-gray-500 font-mono flex items-start gap-1">
+                                                            <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" /> Funds will auto-release {condition.daysAfterPrevious || 0} days after {milestoneIndex === 0 ? 'deal creation' : 'previous milestone'}
                                                         </p>
                                                     </div>
                                                 )}
@@ -215,7 +216,7 @@ export default function ConditionConfigurator({
                                                 {/* Manual approval config */}
                                                 {condition.type === 'manual' && (
                                                     <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                                                        <p className="text-white font-mono text-sm mb-2">✋ Client Manual Approval</p>
+                                                        <p className="text-white font-mono text-sm mb-2 flex items-center gap-2"><Hand className="w-4 h-4" /> Client Manual Approval</p>
                                                         <p className="text-gray-400 text-xs">
                                                             Client must manually approve this milestone release. No automatic conditions.
                                                         </p>
@@ -238,10 +239,11 @@ export default function ConditionConfigurator({
                                                                 Release when ANY condition is met (OR logic)
                                                             </label>
                                                         </div>
-                                                        <p className="text-xs text-gray-500 font-mono">
+                                                        <p className="text-xs text-gray-500 font-mono flex items-start gap-1">
+                                                            <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
                                                             {condition.anyConditionMet
-                                                                ? 'ℹ️ Funds release when ANY condition is satisfied'
-                                                                : 'ℹ️ Funds release when ALL conditions are satisfied (AND logic)'}
+                                                                ? 'Funds release when ANY condition is satisfied'
+                                                                : 'Funds release when ALL conditions are satisfied (AND logic)'}
                                                         </p>
                                                     </div>
                                                 )}

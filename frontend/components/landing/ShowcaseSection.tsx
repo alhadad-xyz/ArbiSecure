@@ -5,7 +5,7 @@ export default function ShowcaseSection() {
             <div className="flex justify-between items-end mb-8 px-4">
                 <h3 className="font-nav text-gray-500">Platform Features</h3>
                 <a className="font-nav flex items-center gap-1 hover:text-white transition-colors" href="#">
-                    Read Documentation <span className="ml-1">↗</span>
+                    View Documentation <span className="ml-1">↗</span>
                 </a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -17,8 +17,8 @@ export default function ShowcaseSection() {
                         <h2 className="text-3xl md:text-5xl font-header mb-6">
                             RECENT <span className="text-white italic font-serif">ESCROWS</span>
                         </h2>
-                        <h4 className="font-header text-3xl md:text-4xl text-white mb-1">Border-less Payments</h4>
-                        <p className="font-mono text-gray-300 text-sm">Settle gigs in seconds via Arbitrum. No banking restrictions.</p>
+                        <h4 className="font-header text-3xl md:text-4xl text-white mb-1">Borderless Payments</h4>
+                        <p className="font-mono text-gray-300 text-sm">On-chain settlement via Arbitrum. No banking restrictions, no delays.</p>
                     </div>
                 </div>
 
@@ -26,9 +26,9 @@ export default function ShowcaseSection() {
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60 mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                     <div className="absolute bottom-8 left-8 z-20">
-                        <span className="font-nav bg-white/10 text-white px-2 py-1 rounded-full border border-white/10 mb-3 inline-block">Efficiency</span>
-                        <h4 className="font-header text-2xl text-white">Rust Powered</h4>
-                        <p className="font-mono text-gray-300 text-xs">Stylus contracts: 10x lower gas.</p>
+                        <span className="font-nav bg-white/10 text-white px-2 py-1 rounded-full border border-white/10 mb-3 inline-block">Performance</span>
+                        <h4 className="font-header text-2xl text-white">Rust-Powered Contracts</h4>
+                        <p className="font-mono text-gray-300 text-xs">Stylus smart contracts deliver up to 10× lower gas costs.</p>
                     </div>
                 </div>
 
@@ -37,8 +37,8 @@ export default function ShowcaseSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                     <div className="absolute bottom-8 left-8 z-20">
                         <span className="font-nav bg-white/10 text-white px-2 py-1 rounded-full border border-white/10 mb-3 inline-block">Security</span>
-                        <h4 className="font-header text-2xl text-white">Audited Logic</h4>
-                        <p className="font-mono text-gray-300 text-xs">Funds held by code, not people.</p>
+                        <h4 className="font-header text-2xl text-white">Non-Custodial Escrow</h4>
+                        <p className="font-mono text-gray-300 text-xs">Funds governed by audited contract logic, not third parties.</p>
                     </div>
                 </div>
             </div>

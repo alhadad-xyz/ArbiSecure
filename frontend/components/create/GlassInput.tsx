@@ -1,4 +1,5 @@
 "use client";
+import { AlertTriangle } from "lucide-react";
 
 interface GlassInputProps {
     label?: string;
@@ -40,7 +41,7 @@ export default function GlassInput({
                 [&::-webkit-inner-spin-button]:appearance-none`}
             />
             {error && (
-                <p className="text-xs text-red-400 mt-1 font-mono">⚠️ {error}</p>
+                <p className="text-xs text-red-400 mt-1 font-mono flex items-center gap-1"><AlertTriangle className="w-3 h-3 flex-shrink-0" /> {error}</p>
             )}
         </div>
     );

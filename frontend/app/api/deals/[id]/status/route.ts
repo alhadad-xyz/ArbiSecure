@@ -7,22 +7,28 @@ export async function PATCH(
 ) {
     try {
         const { id } = await context.params;
-        const { status } = await request.json();
+        const { status, contract_deal_id } = await request.json();
 
-        console.log('[API] Updating deal status:', { id, status });
+        console.log('[API] Updating deal status:', { id, status, contract_deal_id });
 
         // Validate status
-        if (!['pending', 'funded', 'completed'].includes(status)) {
+        if (!['pending', 'funded', 'completed', 'disputed'].includes(status)) {
             return NextResponse.json(
                 { error: 'Invalid status value' },
                 { status: 400 }
             );
         }
 
+        // Update object
+        const updateData: any = { status };
+        if (contract_deal_id !== undefined) {
+            updateData.contract_deal_id = contract_deal_id;
+        }
+
         // Update deal status
         const { data, error } = await supabase
             .from('deals')
-            .update({ status })
+            .update(updateData)
             .eq('id', id)
             .select()
             .single();
