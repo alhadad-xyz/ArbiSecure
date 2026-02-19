@@ -28,8 +28,7 @@ export default function HeroSection() {
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-20">
                 <TransitionLink href="/create"
                     className="group relative flex items-center justify-between border border-glass-border rounded-full pl-2 pr-6 py-2 bg-transparent hover:bg-glass-hover transition-all font-nav w-48 h-14">
-                    <div
-                        className="flex items-center justify-center w-10 h-10 bg-white rounded-full mr-3 group-hover:scale-90 transition-transform">
+                    <div className="flex items-center justify-center w-13 h-10 bg-white rounded-full mr-3 group-hover:scale-110 transition-transform duration-300">
                         <div className="flex gap-0.5">
                             <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
                             <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
@@ -38,10 +37,10 @@ export default function HeroSection() {
                     <span>Create Agreement</span>
                 </TransitionLink>
                 <TransitionLink href="/dashboard/deals"
-                    className="flex items-center justify-between bg-white text-black rounded-full pl-6 pr-2 py-2 hover:bg-gray-200 transition-all font-nav font-bold w-48 h-14">
+                    className="group flex items-center justify-between bg-white text-black rounded-full pl-6 pr-2 py-2 hover:bg-gray-200 transition-all font-nav font-bold w-48 h-14">
                     <span>View Dashboard</span>
-                    <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center ml-3">
-                        <svg className="w-5 h-5 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center ml-3 group-hover:scale-110 transition-transform duration-300">
+                        <svg className="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </div>
